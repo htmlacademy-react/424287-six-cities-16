@@ -1,3 +1,3 @@
 export const Setting = {
-    PlacesCount: 312
-  };
+  PlacesCount: 312
+};
