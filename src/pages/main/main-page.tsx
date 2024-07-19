@@ -1,10 +1,32 @@
 import Card from '../../components/card/card';
 
 type MainScreenProps = {
-  placesCount: number;
+  dataOffers: {
+  id: string;
+  title: string;
+  type: string;
+  price: number;
+  city: {
+      name: string;
+      location: {
+          latitude: number;
+          longitude: number;
+          zoom: number;
+      };
+  };
+  location: {
+      latitude: number;
+      longitude: number;
+      zoom: number;
+  };
+  isFavorite: boolean;
+  isPremium: boolean;
+  rating: number;
+  previewImage: string;
+}[];
 }
 
-function MainPage({placesCount}:MainScreenProps):JSX.Element {
+function MainPage({dataOffers}:MainScreenProps):JSX.Element {
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -78,7 +100,7 @@ function MainPage({placesCount}:MainScreenProps):JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{placesCount} places to stay in Amsterdam</b>
+              <b className="places__found">{dataOffers.length} places to stay in Amsterdam</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -95,11 +117,7 @@ function MainPage({placesCount}:MainScreenProps):JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
+                {dataOffers.map((item) => <Card key={item.id} data={item}/>)}
               </div>
             </section>
             <div className="cities__right-section">
@@ -113,3 +131,5 @@ function MainPage({placesCount}:MainScreenProps):JSX.Element {
 }
 
 export default MainPage;
+
+

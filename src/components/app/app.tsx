@@ -1,12 +1,9 @@
+import { DATA } from '../../const';
 import MainPage from '../../pages/main/main-page';
 
-type AppScreenProps = {
-    placesCount: number;
-  }
-
-function App({placesCount}: AppScreenProps): JSX.Element {
+function App(): JSX.Element {
   return (
-    <MainPage placesCount={placesCount}/>
+    <MainPage dataOffers = {DATA} />
   );
 }
 
