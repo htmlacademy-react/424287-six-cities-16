@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 
-interface CardsProps {
-
+export type CardProps = {
   id: string;
   title: string;
   type: string;
@@ -25,12 +24,13 @@ interface CardsProps {
   previewImage: string;
 }
 
-function Card({data} :{data: CardsProps}):JSX.Element {
+function Card({data} :{data: CardProps}):JSX.Element {
   return (
-    <article className="cities__card place-card">
-      <div className="place-card__mark">
-        <span>Premium</span>
-      </div>
+    <article className="cities__card place-card" onMouseOver={() => console.log('Hello world')}>
+      {data.isPremium ?
+        <div className="place-card__mark">
+          <span>Premium</span>
+        </div> : null}
       <div className="cities__image-wrapper place-card__image-wrapper">
         <Link to="/">
           <img className="place-card__image" src={data.previewImage} width={260} height={200} alt="Place image"/>
@@ -56,7 +56,7 @@ function Card({data} :{data: CardsProps}):JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to='/'>{data.title}</Link>
+          <Link to={`/offer/${data.id}`}>{data.title}</Link>
         </h2>
         <p className="place-card__type">{data.type}</p>
       </div>

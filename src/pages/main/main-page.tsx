@@ -1,30 +1,8 @@
-import Card from '../../components/card/card';
+import Card, { CardProps } from '../../components/card/card';
 import { Helmet } from 'react-helmet-async';
 
 type MainScreenProps = {
-  dataOffers: {
-  id: string;
-  title: string;
-  type: string;
-  price: number;
-  city: {
-      name: string;
-      location: {
-          latitude: number;
-          longitude: number;
-          zoom: number;
-      };
-  };
-  location: {
-      latitude: number;
-      longitude: number;
-      zoom: number;
-  };
-  isFavorite: boolean;
-  isPremium: boolean;
-  rating: number;
-  previewImage: string;
-}[];
+  dataOffers: CardProps[];
 }
 
 function MainPage({dataOffers}:MainScreenProps):JSX.Element {

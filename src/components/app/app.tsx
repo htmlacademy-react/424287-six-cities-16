@@ -1,7 +1,8 @@
 import { BrowserRouter, Routes,Route } from 'react-router-dom';
-import { AuthorizationStatus, DATA } from '../../const';
+import { AuthorizationStatus} from '../../const';
 import { AppRoute } from '../../const';
 import { HelmetProvider } from 'react-helmet-async';
+import { DATA, OFFERS_DATA } from '../../mock/offers';
 
 import MainPage from '../../pages/main/main-page';
 import ErrorPage from '../error-page/error-page';
@@ -30,33 +31,13 @@ function App(): JSX.Element {
             />
             <Route
               path={AppRoute.Offer}
-              element={ <Offer/>}
+              element={ <Offer dataOffer={OFFERS_DATA}/>}
             />
             <Route
               path="*"
               element={<ErrorPage />}
             />
           </Route>
-          {/* <Route
-            path={AppRoute.Root}
-            element={ <MainPage dataOffers = {DATA} />}
-          />
-          <Route
-            path={AppRoute.Favorites}
-            element={ <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}><Favourites/></PrivateRoute>}
-          />
-          <Route
-            path={AppRoute.Login}
-            element={ <Login/>}
-          />
-          <Route
-            path={AppRoute.Offer}
-            element={ <Offer/>}
-          />
-          <Route
-            path="*"
-            element={<ErrorPage />}
-          /> */}
         </Routes>
       </BrowserRouter>
     </HelmetProvider>
