@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useState } from 'react';
 
 export type CardProps = {
@@ -25,14 +25,10 @@ export type CardProps = {
   previewImage: string;
 }
 
-function Card({data} :{data: CardProps}):JSX.Element {
-  const [, setActiveCard] = useState(false);
-  const handleMouseOver = () => {
-    setActiveCard(true);
-    console.log(setActiveCard)
-  };
+function Card({data,onMouseOver} :{data: CardProps; onMouseOver?:() => void}):JSX.Element {
+
   return (
-    <article className="cities__card place-card" onMouseOver={handleMouseOver}>
+    <article className="cities__card place-card" onMouseEnter={onMouseOver}>
       {data.isPremium ?
         <div className="place-card__mark">
           <span>Premium</span>
