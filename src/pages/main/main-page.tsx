@@ -1,7 +1,8 @@
-import Card, { CardProps } from '../../components/card/card';
+import CardList from '../../components/card-list/card-list';
+import { CardProps } from '../../components/card/card';
 import { Helmet } from 'react-helmet-async';
 
-type MainScreenProps = {
+export type MainScreenProps = {
   dataOffers: CardProps[];
 }
 
@@ -70,9 +71,7 @@ function MainPage({dataOffers}:MainScreenProps):JSX.Element {
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <div className="cities__places-list places__list tabs__content">
-                {dataOffers.map((item) => <Card key={item.id} data={item}/>)}
-              </div>
+              <CardList dataOffers={dataOffers}/>
             </section>
             <div className="cities__right-section">
               <section className="cities__map map"></section>

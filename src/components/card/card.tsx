@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 export type CardProps = {
   id: string;
@@ -25,8 +26,13 @@ export type CardProps = {
 }
 
 function Card({data} :{data: CardProps}):JSX.Element {
+  const [, setActiveCard] = useState(false);
+  const handleMouseOver = () => {
+    setActiveCard(true);
+    console.log(setActiveCard)
+  };
   return (
-    <article className="cities__card place-card" onMouseOver={() => console.log('Hello world')}>
+    <article className="cities__card place-card" onMouseOver={handleMouseOver}>
       {data.isPremium ?
         <div className="place-card__mark">
           <span>Premium</span>
@@ -51,7 +57,7 @@ function Card({data} :{data: CardProps}):JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: '80%'}}></span>
+            <span style={{width: `${data.rating / 5 * 100}%`}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>

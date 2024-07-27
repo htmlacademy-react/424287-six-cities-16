@@ -1,5 +1,4 @@
 import { Helmet } from 'react-helmet-async';
-import { CardProps } from '../../components/card/card';
 import { useParams } from 'react-router-dom';
 // import { capitalizeFirstLetter } from '../../utils';
 
@@ -61,25 +60,9 @@ function Offer({dataOffer}:{dataOffer:OfferCards}):JSX.Element {
         <div className="offer__gallery-container container">
           <div className="offer__gallery">
             {currentOffer?.images.map((image)=>(
-              <div className="offer__image-wrapper" key='image'>
+              <div className="offer__image-wrapper" key={image}>
                 <img className="offer__image" src={image} alt="Photo studio"/>
               </div>))}
-
-            {/* <div className="offer__image-wrapper">
-              <img className="offer__image" src="img/apartment-01.jpg" alt="Photo studio"/>
-            </div>
-            <div className="offer__image-wrapper">
-              <img className="offer__image" src="img/apartment-02.jpg" alt="Photo studio"/>
-            </div>
-            <div className="offer__image-wrapper">
-              <img className="offer__image" src="img/apartment-03.jpg" alt="Photo studio"/>
-            </div>
-            <div className="offer__image-wrapper">
-              <img className="offer__image" src="img/studio-01.jpg" alt="Photo studio"/>
-            </div>
-            <div className="offer__image-wrapper">
-              <img className="offer__image" src="img/apartment-01.jpg" alt="Photo studio"/>
-            </div> */}
           </div>
         </div>
         <div className="offer__container container">
@@ -102,7 +85,7 @@ function Offer({dataOffer}:{dataOffer:OfferCards}):JSX.Element {
             </div>
             <div className="offer__rating rating">
               <div className="offer__stars rating__stars">
-                <span style={{width: '80%'}}></span>
+                <span style={{width: `${currentOffer.rating / 5 * 100}%`}}></span>
                 <span className="visually-hidden">Rating</span>
               </div>
               <span className="offer__rating-value rating__value">{currentOffer?.rating}</span>
@@ -126,14 +109,14 @@ function Offer({dataOffer}:{dataOffer:OfferCards}):JSX.Element {
               <h2 className="offer__inside-title">What&apos;s inside</h2>
               <ul className="offer__inside-list">
                 {currentOffer?.goods.map((goodItem) =>
-                  <li className="offer__inside-item" key='goodItem'>{goodItem}</li>
+                  <li className="offer__inside-item" key={goodItem}>{goodItem}</li>
                 )}
               </ul>
             </div>
             <div className="offer__host">
               <h2 className="offer__host-title">Meet the host</h2>
               <div className="offer__host-user user">
-                <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
+                <div className={`offer__avatar-wrapper user__avatar-wrapper ${currentOffer?.host.isPro ? 'offer__avatar-wrapper--pro' : ''} `}>
                   <img className="offer__avatar user__avatar" src={currentOffer?.host.avatarUrl} width="74" height="74" alt="Host avatar"/>
                 </div>
                 <span className="offer__user-name">

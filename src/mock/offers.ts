@@ -172,7 +172,7 @@ export const OFFERS_DATA = [
     host: {
       name: 'Oliver Conner',
       avatarUrl: 'img/avatar-angelina.jpg',
-      isPro: false
+      isPro: true
     },
     images: [
       'img/apartment-01.jpg','img/apartment-03.jpg','img/apartment-01.jpg','img/apartment-03.jpg','img/apartment-01.jpg','img/apartment-03.jpg'
