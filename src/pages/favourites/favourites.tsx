@@ -15,8 +15,7 @@ function Favourites({dataOffers}:MainScreenProps): JSX.Element {
         <section className="favorites">
           <h1 className="favorites__title">Saved listing</h1>
           <ul className="favorites__list">
-            {Object.entries(offerCardsByCity).map(([cityName,cards]) => {
-
+            {Object.entries(offerCardsByCity).map(([cityName,cards]) => (
               <li className="favorites__locations-items" key={cityName}>
                 <div className="favorites__locations locations locations--current">
                   <div className="locations__item">
@@ -26,7 +25,7 @@ function Favourites({dataOffers}:MainScreenProps): JSX.Element {
                   </div>
                 </div>
                 <div className="favorites__places">
-                  {cards.map((item) => (item.isFavorite ?
+                  {cards.map((item) => (
                     <article className="favorites__card place-card" key={item.id}>
                       {item.isPremium ?
                         <div className="place-card__mark">
@@ -62,10 +61,10 @@ function Favourites({dataOffers}:MainScreenProps): JSX.Element {
                         </h2>
                         <p className="place-card__type">{item.type}</p>
                       </div>
-                    </article> : null))}
+                    </article>))}
                 </div>
-              </li>;
-            })}
+              </li>
+            ))}
           </ul>
         </section>
       </div>

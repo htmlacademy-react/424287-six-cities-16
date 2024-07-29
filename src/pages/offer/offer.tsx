@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import Form from '../../components/form/form';
+import { AuthorizationStatus } from '../../const';
 // import { capitalizeFirstLetter } from '../../utils';
 
 //  type OfferCard = Omit<CardsProps, 'previewImage'> & {

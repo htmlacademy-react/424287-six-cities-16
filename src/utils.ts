@@ -8,10 +8,12 @@ type OfferCardByCity = {
 export const getOfferCardsByCity = (offerCards:CardProps[]) => {
   const offerCardsByCity: OfferCardByCity = {};
   for(const card of offerCards) {
-    if(!offerCardsByCity[card.city.name]) {
-      offerCardsByCity[card.city.name] = [];
+    if(card.isFavorite) {
+      if(!offerCardsByCity[card.city.name]) {
+        offerCardsByCity[card.city.name] = [];
+      }
+      offerCardsByCity[card.city.name].push(card);
     }
-    offerCardsByCity[card.city.name].push(card);
   }
 
   return offerCardsByCity;

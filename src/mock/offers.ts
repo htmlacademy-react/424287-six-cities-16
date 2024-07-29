@@ -40,7 +40,7 @@ export const DATA = [
       longitude: 4.673877537499948,
       zoom: 8
     },
-    isFavorite: false,
+    isFavorite: true,
     isPremium: true,
     rating: 4,
     previewImage: 'https://7d9e88a8-f178-4098-bea5-48d960920605.selcdn.net/138baeb7-1dab-4a74-a1ae-96f477301f15/-/format/jpeg/-/resize/1300x/'
@@ -125,7 +125,7 @@ export const OFFERS_DATA = [
       longitude: 4.673877537499948,
       zoom: 8
     },
-    isFavorite: false,
+    isFavorite: true,
     isPremium: true,
     rating: 4,
     description: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.',
