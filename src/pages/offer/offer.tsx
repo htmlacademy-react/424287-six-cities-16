@@ -3,8 +3,41 @@ import { useParams } from 'react-router-dom';
 import Form from '../../components/form/form';
 import { AuthorizationStatus } from '../../const';
 // import { capitalizeFirstLetter } from '../../utils';
+import { CardProps } from '../../components/card/card';
 
-//  type OfferCard = Omit<CardsProps, 'previewImage'> & {
+ type OfferCards = Omit<CardProps, 'previewImage'> & {
+  description: string;
+  bedrooms: number;
+  goods: string[];
+  host: {
+  name: string;
+  avatarUrl: string;
+  isPro: boolean;
+  };
+  images: string[];
+  maxAdults: number;
+ }
+// type OfferCards = {
+//     id: string;
+//     title: string;
+//     type: string;
+//     price: number;
+//     city: {
+//       name: string;
+//       location: {
+//         latitude: number;
+//         longitude: number;
+//         zoom: number;
+//       };
+//     };
+//     location: {
+//       latitude: number;
+//       longitude: number;
+//       zoom: number;
+//     };
+//     isFavorite: boolean;
+//     isPremium: boolean;
+//     rating: number;
 //   description: string;
 //   bedrooms: number;
 //   goods: string[];
@@ -16,43 +49,11 @@ import { AuthorizationStatus } from '../../const';
 //   images: string[];
 //   maxAdults: number;
 //  }[]
-type OfferCards = {
-    id: string;
-    title: string;
-    type: string;
-    price: number;
-    city: {
-      name: string;
-      location: {
-        latitude: number;
-        longitude: number;
-        zoom: number;
-      };
-    };
-    location: {
-      latitude: number;
-      longitude: number;
-      zoom: number;
-    };
-    isFavorite: boolean;
-    isPremium: boolean;
-    rating: number;
-  description: string;
-  bedrooms: number;
-  goods: string[];
-  host: {
-  name: string;
-  avatarUrl: string;
-  isPro: boolean;
-  };
-  images: string[];
-  maxAdults: number;
- }[]
 
-function Offer({dataOffer}:{dataOffer:OfferCards}):JSX.Element {
+function Offer({dataOffer}:{dataOffer:OfferCards[]}):JSX.Element {
   const {id:offerId} = useParams();
   const currentOffer = dataOffer.find((item)=> item.id === offerId);
-
+  // if
   return (
     <main className="page__main page__main--offer">
       <Helmet>
