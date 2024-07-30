@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { AppRoute } from '../../const';
 
 export type CardProps = {
   id: string;
@@ -33,7 +34,7 @@ function Card({data,onMouseOver} :{data: CardProps; onMouseOver?:() => void}):JS
           <span>Premium</span>
         </div> : null}
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <Link to="/">
+        <Link to={AppRoute.Root}>
           <img className="place-card__image" src={data.previewImage} width={260} height={200} alt="Place image"/>
         </Link>
       </div>

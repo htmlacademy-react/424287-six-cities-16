@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { MainScreenProps } from '../main/main-page';
 import { getOfferCardsByCity } from '../../utils';
+import { AppRoute } from '../../const';
 
 function Favourites({dataOffers}:MainScreenProps): JSX.Element {
   const offerCardsByCity = getOfferCardsByCity(dataOffers);
@@ -19,7 +20,7 @@ function Favourites({dataOffers}:MainScreenProps): JSX.Element {
               <li className="favorites__locations-items" key={cityName}>
                 <div className="favorites__locations locations locations--current">
                   <div className="locations__item">
-                    <Link className="locations__item-link" to='/'>
+                    <Link className="locations__item-link" to={AppRoute.Root}>
                       <span>{cityName}</span>
                     </Link>
                   </div>
@@ -33,7 +34,7 @@ function Favourites({dataOffers}:MainScreenProps): JSX.Element {
                         </div> : null}
 
                       <div className="favorites__image-wrapper place-card__image-wrapper">
-                        <Link to='/'>
+                        <Link to={AppRoute.Root}>
                           <img className="place-card__image" src={item.previewImage} width="150" height="110" alt="Place image"/>
                         </Link>
                       </div>
@@ -57,7 +58,7 @@ function Favourites({dataOffers}:MainScreenProps): JSX.Element {
                           </div>
                         </div>
                         <h2 className="place-card__name">
-                          <Link to='/'>{item.title}</Link>
+                          <Link to={AppRoute.Root}>{item.title}</Link>
                         </h2>
                         <p className="place-card__type">{item.type}</p>
                       </div>
