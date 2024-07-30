@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import { AppRoute } from '../../const';
 
 function Login(): JSX.Element {
   return (
@@ -24,7 +25,7 @@ function Login(): JSX.Element {
         </section>
         <section className="locations locations--login locations--current">
           <div className="locations__item">
-            <Link className="locations__item-link" to='/'>
+            <Link className="locations__item-link" to={AppRoute.Root}>
               <span>Amsterdam</span>
             </Link>
           </div>
