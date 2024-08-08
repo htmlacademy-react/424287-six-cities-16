@@ -19,7 +19,7 @@ function App(): JSX.Element {
         <Routes>
           <Route path={AppRoute.Root} element={<Layout/>}>
             <Route
-              index element={ <MainPage dataOffers = {DATA} />}
+              index element={ <MainPage dataOffers = {DATA}/>}
             />
             <Route
               path={AppRoute.Favorites}
