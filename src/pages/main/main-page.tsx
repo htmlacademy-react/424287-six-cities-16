@@ -2,12 +2,30 @@ import { Link } from 'react-router-dom';
 import CardList from '../../components/card-list/card-list';
 import { CardProps } from '../../components/card/card';
 import { Helmet } from 'react-helmet-async';
+import Map from '../../components/map/map';
+import { CITY } from '../../mock/city';
+import { useState } from 'react';
 
 export type MainScreenProps = {
   dataOffers: CardProps[];
 }
 
+const selectedPoint = {
+  title: 'Нью-Йорк',
+  lat: 40.835292,
+  lng: -73.916236,
+};
 function MainPage({dataOffers}:MainScreenProps):JSX.Element {
+  // const [activeCard, setActiveCard] = useState<string|undefined>(undefined);
+  // const handleMouseOver = (id:string) => {
+  //   setActiveCard(id);
+  //   console.log(activeCard);
+  // };
+  // const handleMouseLeave = () => {
+  //   setActiveCard(undefined);
+  //   console.log(activeCard);
+
+  // }
   return (
     <>
       <Helmet>
@@ -35,9 +53,9 @@ function MainPage({dataOffers}:MainScreenProps):JSX.Element {
                 </Link>
               </li>
               <li className="locations__item">
-                <Link className="locations__item-link tabs__item tabs__item--active">
+                <a className="locations__item-link tabs__item tabs__item--active">
                   <span>Amsterdam</span>
-                </Link>
+                </a>
               </li>
               <li className="locations__item">
                 <Link className="locations__item-link tabs__item" to="#">
@@ -72,10 +90,12 @@ function MainPage({dataOffers}:MainScreenProps):JSX.Element {
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <CardList dataOffers={dataOffers}/>
+              <CardList dataOffers={dataOffers} />
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <section className="cities__map map">
+              <Map city={CITY} points={dataOffers} selectedPoint={selectedPoint} />
+              </section>
             </div>
           </div>
         </div>

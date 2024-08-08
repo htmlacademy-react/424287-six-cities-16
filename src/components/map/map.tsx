@@ -1,8 +1,9 @@
 import {useRef, useEffect} from 'react';
 import {Icon, Marker, layerGroup} from 'leaflet';
 import useMap from '../../hooks/use-map';
-import {City, Points, Point} from '../../types/types';
+import {City, Point} from '../../types/types';
 import 'leaflet/dist/leaflet.css';
+import { CardProps } from '../card/card';
 
 const URL_MARKER_DEFAULT =
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/pin.svg';
@@ -11,7 +12,7 @@ const URL_MARKER_CURRENT =
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/main-pin.svg';
 type MapProps = {
   city: City;
-  points: Points;
+  points: CardProps[];
   selectedPoint: Point | undefined;
 };
 
@@ -38,8 +39,8 @@ function Map(props: MapProps): JSX.Element {
       const markerLayer = layerGroup().addTo(map);
       points.forEach((point) => {
         const marker = new Marker({
-          lat: point.lat,
-          lng: point.lng
+          lat: point.location.latitude,
+          lng: point.location.longitude
         });
 
         marker
