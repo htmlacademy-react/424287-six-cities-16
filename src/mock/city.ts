@@ -6,3 +6,7 @@ export const CITY: City = {
   lng: 4.673877537499948,
   zoom: 8
 };
+
+export const CITIES_MOCKS = {
+
+};

@@ -99,14 +99,14 @@ export const DATA = [
     city: {
       name: 'Minsk',
       location: {
-        latitude: 52.35514938496378,
-        longitude: 4.673877537499948,
+        latitude: 53.5359,
+        longitude: 27.3400,
         zoom: 8
       }
     },
     location: {
-      latitude: 52.35514938496378,
-      longitude: 4.673877537499948,
+      latitude: 53.5359,
+      longitude: 27.3400,
       zoom: 8
     },
     isFavorite: true,
@@ -123,13 +123,13 @@ export const DATA = [
       name: 'Paris',
       location: {
         latitude: 52.35514938496378,
-        longitude: 4.673877537499948,
+        longitude: 40.673877537499948,
         zoom: 8
       }
     },
     location: {
       latitude: 52.35514938496378,
-      longitude: 4.673877537499948,
+      longitude: 40.673877537499948,
       zoom: 8
     },
     isFavorite: true,

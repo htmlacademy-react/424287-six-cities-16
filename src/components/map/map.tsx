@@ -1,7 +1,7 @@
 import {useRef, useEffect} from 'react';
 import {Icon, Marker, layerGroup} from 'leaflet';
 import useMap from '../../hooks/use-map';
-import {City, Point} from '../../types/types';
+import {City} from '../../types/types';
 import 'leaflet/dist/leaflet.css';
 import { CardProps } from '../card/card';
 
@@ -13,7 +13,7 @@ const URL_MARKER_CURRENT =
 type MapProps = {
   city: City;
   points: CardProps[];
-  selectedPoint: Point | undefined;
+  selectedPoint: string | undefined;
 };
 
 const defaultCustomIcon = new Icon({
@@ -45,7 +45,7 @@ function Map(props: MapProps): JSX.Element {
 
         marker
           .setIcon(
-            selectedPoint !== undefined && point.title === selectedPoint.title
+            selectedPoint !== undefined && point.id === selectedPoint
               ? currentCustomIcon
               : defaultCustomIcon
           )
@@ -58,7 +58,7 @@ function Map(props: MapProps): JSX.Element {
     }
   }, [map, points, selectedPoint]);
 
-  return <div style={{height: '500px'}} ref={mapRef}></div>;
+  return <div style={{height: '100%'}} ref={mapRef}></div>;
 }
 
 export default Map;
