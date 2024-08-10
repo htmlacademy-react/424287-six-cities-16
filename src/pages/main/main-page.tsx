@@ -1,9 +1,8 @@
-import { Link } from 'react-router-dom';
 import CardList from '../../components/card-list/card-list';
 import { CardProps } from '../../components/card/card';
 import { Helmet } from 'react-helmet-async';
 import Map from '../../components/map/map';
-import { CITY } from '../../mock/city';
+import { CITIES_MOCKS} from '../../mock/city';
 import { useState } from 'react';
 
 type MainScreenProps = {
@@ -18,6 +17,8 @@ function MainPage({dataOffers}:MainScreenProps):JSX.Element {
   const handleMouseLeave = () => {
     setSelectedPoint(undefined);
   };
+  const [activeCity, setActiveCity] = useState(CITIES_MOCKS[3]);
+
   return (
     <>
       <Helmet>
@@ -29,36 +30,14 @@ function MainPage({dataOffers}:MainScreenProps):JSX.Element {
         <div className="tabs">
           <section className="locations container">
             <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <Link className="locations__item-link tabs__item" to="#">
-                  <span>Paris</span>
-                </Link>
-              </li>
-              <li className="locations__item">
-                <Link className="locations__item-link tabs__item" to="#">
-                  <span>Cologne</span>
-                </Link>
-              </li>
-              <li className="locations__item">
-                <Link className="locations__item-link tabs__item" to="#">
-                  <span>Brussels</span>
-                </Link>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active">
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <Link className="locations__item-link tabs__item" to="#">
-                  <span>Hamburg</span>
-                </Link>
-              </li>
-              <li className="locations__item">
-                <Link className="locations__item-link tabs__item" to="#">
-                  <span>Dusseldorf</span>
-                </Link>
-              </li>
+              {CITIES_MOCKS.map((item, id) =>(
+                //eslint-disable-next-line react/no-array-index-key
+                <li className="locations__item" key={id} onClick={() => setActiveCity(item)}>
+                  <a className={`locations__item-link tabs__item ${item === activeCity ? 'tabs__item--active' : ''}`}>
+                    <span>{item}</span>
+                  </a>
+                </li>))}
+
             </ul>
           </section>
         </div>
@@ -86,7 +65,7 @@ function MainPage({dataOffers}:MainScreenProps):JSX.Element {
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map city={CITY} points={dataOffers} selectedPoint={selectedPoint} />
+                <Map city={activeCity} points={dataOffers} selectedPoint={selectedPoint} />
               </section>
             </div>
           </div>
