@@ -9,20 +9,20 @@ export const CITY: City = {
 
 export const CITIES_MOCKS = [{
   title: 'Paris',
-  lat: 52.35514938496378,
-  lng: 4.673877537499948,
+  lat: 48.856663,
+  lng:  2.351556,
   zoom: 8
 },
 {
   title: 'Cologne',
-  lat: 52.35514938496378,
-  lng: 4.673877537499948,
+  lat: 50.5632,
+  lng: 6.5728,
   zoom: 8
 },
 {
   title: 'Brussels',
-  lat: 52.35514938496378,
-  lng: 4.673877537499948,
+  lat: 50.5048,
+  lng: 4.2109,
   zoom: 8
 },
 {

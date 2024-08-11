@@ -5,11 +5,11 @@ import {City} from '../../types/types';
 import 'leaflet/dist/leaflet.css';
 import { CardProps } from '../card/card';
 
-const URL_MARKER_DEFAULT =
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/pin.svg';
+enum Markers {
+  Default = 'markup/img/pin.svg',
+  Current = 'markup/img/pin-active.svg',
+}
 
-const URL_MARKER_CURRENT =
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/main-pin.svg';
 type MapProps = {
   city: City;
   points: CardProps[];
@@ -17,15 +17,15 @@ type MapProps = {
 };
 
 const defaultCustomIcon = new Icon({
-  iconUrl: URL_MARKER_DEFAULT,
-  iconSize: [40, 40],
-  iconAnchor: [20, 40]
+  iconUrl: Markers.Default,
+  iconSize: [27, 39],
+  iconAnchor: [13, 39]
 });
 
 const currentCustomIcon = new Icon({
-  iconUrl: URL_MARKER_CURRENT,
-  iconSize: [40, 40],
-  iconAnchor: [20, 40]
+  iconUrl: Markers.Current,
+  iconSize: [27, 39],
+  iconAnchor: [13, 39]
 });
 
 function Map(props: MapProps): JSX.Element {
@@ -33,6 +33,13 @@ function Map(props: MapProps): JSX.Element {
 
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
+
+  useEffect(() => {
+    if (map) {
+      map.flyTo([city.lat, city.lng], city.zoom);
+    }
+  }, [city, map]);
+
 
   useEffect(() => {
     if (map) {

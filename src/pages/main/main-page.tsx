@@ -18,7 +18,7 @@ function MainPage({dataOffers}:MainScreenProps):JSX.Element {
     setSelectedPoint(undefined);
   };
   const [activeCity, setActiveCity] = useState(CITIES_MOCKS[3]);
-
+  const [cityOffers,setCityOffers] = useState(dataOffers.filter((offer) => offer.city.name === activeCity.title));
   return (
     <>
       <Helmet>
@@ -32,9 +32,13 @@ function MainPage({dataOffers}:MainScreenProps):JSX.Element {
             <ul className="locations__list tabs__list">
               {CITIES_MOCKS.map((item, id) =>(
                 //eslint-disable-next-line react/no-array-index-key
-                <li className="locations__item" key={id} onClick={() => setActiveCity(item)}>
+                <li className="locations__item" key={id} onClick={() => {
+                  setActiveCity(item);
+                  setCityOffers(dataOffers.filter((offer) => offer.city.name === item.title));
+                }}
+                >
                   <a className={`locations__item-link tabs__item ${item === activeCity ? 'tabs__item--active' : ''}`}>
-                    <span>{item}</span>
+                    <span>{item.title}</span>
                   </a>
                 </li>))}
 
@@ -45,7 +49,7 @@ function MainPage({dataOffers}:MainScreenProps):JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{dataOffers.length} places to stay in Amsterdam</b>
+              <b className="places__found">{dataOffers.length} places to stay in {activeCity.title}</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -61,7 +65,7 @@ function MainPage({dataOffers}:MainScreenProps):JSX.Element {
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <CardList dataOffers={dataOffers} onHover={handleMouseOver} onHandlerMouseLeave={handleMouseLeave} />
+              <CardList dataOffers={cityOffers} onHover={handleMouseOver} onHandlerMouseLeave={handleMouseLeave} />
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">

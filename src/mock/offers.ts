@@ -122,14 +122,14 @@ export const DATA = [
     city: {
       name: 'Paris',
       location: {
-        latitude: 52.35514938496378,
-        longitude: 40.673877537499948,
+        latitude: 48.856663,
+        longitude: 2.351556,
         zoom: 8
       }
     },
     location: {
-      latitude: 52.35514938496378,
-      longitude: 40.673877537499948,
+      latitude: 48.856663,
+      longitude: 2.351556,
       zoom: 8
     },
     isFavorite: true,
