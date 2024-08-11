@@ -5,7 +5,7 @@ import Map from '../../components/map/map';
 import { CITIES_MOCKS} from '../../mock/city';
 import { useState } from 'react';
 
-type MainScreenProps = {
+export type MainScreenProps = {
   dataOffers: CardProps[];
 }
 
