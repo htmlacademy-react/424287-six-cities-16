@@ -1,7 +1,7 @@
 export const DATA = [
   {
-    id: '6af6f711-c28d-4121-82cd-e0b462a27f00',
-    title: 'Beautiful & luxurious studio at great location',
+    id: '6af6f711-c28d-4121-82cd-e0b462a27f12',
+    title: 'Studio at great location',
     type: 'apartment',
     price: 120,
     city: {
@@ -13,8 +13,77 @@ export const DATA = [
       }
     },
     location: {
-      latitude: 52.35514938496378,
-      longitude: 4.673877537499948,
+      latitude: 52.3809553943508,
+      longitude: 4.939309666406198,
+      zoom: 8
+    },
+    isFavorite: false,
+    isPremium: false,
+    rating: 5,
+    previewImage: 'https://static.tildacdn.com/tild3636-6662-4764-a337-656637316562/___.png'
+  },
+  {
+    id: '6af6f711-c28d-4121-82cd-e0b462a27f19',
+    title: 'Beautiful & luxurious studio at great location!!!',
+    type: 'apartment',
+    price: 120,
+    city: {
+      name: 'Amsterdam',
+      location: {
+        latitude: 52.35514938496378,
+        longitude: 4.673877537499948,
+        zoom: 8
+      }
+    },
+    location: {
+      latitude: 52.3909553943508,
+      longitude: 4.85309666406198,
+      zoom: 8
+    },
+    isFavorite: false,
+    isPremium: false,
+    rating: 5,
+    previewImage: 'https://static.tildacdn.com/tild3636-6662-4764-a337-656637316562/___.png'
+  },
+  {
+    id: '6af6f711-c28d-4121-82cd-e0b462a27f11',
+    title: 'Beautiful apartment',
+    type: 'apartment',
+    price: 120,
+    city: {
+      name: 'Amsterdam',
+      location: {
+        latitude: 52.35514938496378,
+        longitude: 4.673877537499948,
+        zoom: 8
+      }
+    },
+    location: {
+      latitude: 52.3609553943508,
+      longitude: 4.85309666406198,
+      zoom: 8
+    },
+    isFavorite: false,
+    isPremium: false,
+    rating: 5,
+    previewImage: 'https://static.tildacdn.com/tild3636-6662-4764-a337-656637316562/___.png'
+  },
+  {
+    id: '6af6f711-c28d-4121-82cd-e0b462a27f16',
+    title: 'Luxurious studio',
+    type: 'apartment',
+    price: 120,
+    city: {
+      name: 'Amsterdam',
+      location: {
+        latitude: 52.35514938496378,
+        longitude: 4.673877537499948,
+        zoom: 8
+      }
+    },
+    location: {
+      latitude: 52.3909553943508,
+      longitude:  4.929309666406198,
       zoom: 8
     },
     isFavorite: false,
@@ -30,14 +99,14 @@ export const DATA = [
     city: {
       name: 'Minsk',
       location: {
-        latitude: 52.35514938496378,
-        longitude: 4.673877537499948,
+        latitude: 53.5359,
+        longitude: 27.3400,
         zoom: 8
       }
     },
     location: {
-      latitude: 52.35514938496378,
-      longitude: 4.673877537499948,
+      latitude: 53.5359,
+      longitude: 27.3400,
       zoom: 8
     },
     isFavorite: true,
@@ -53,14 +122,14 @@ export const DATA = [
     city: {
       name: 'Paris',
       location: {
-        latitude: 52.35514938496378,
-        longitude: 4.673877537499948,
+        latitude: 48.856663,
+        longitude: 2.351556,
         zoom: 8
       }
     },
     location: {
-      latitude: 52.35514938496378,
-      longitude: 4.673877537499948,
+      latitude: 48.856663,
+      longitude: 2.351556,
       zoom: 8
     },
     isFavorite: true,

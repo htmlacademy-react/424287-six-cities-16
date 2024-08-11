@@ -25,12 +25,12 @@ export type CardProps = {
   previewImage: string;
 }
 
-function Card({data,onMouseOver} :{data: CardProps; onMouseOver?:() => void}):JSX.Element {
+function Card({data,onMouseOver,onMouseLeave} :{data: CardProps; onMouseOver?:() => void;onMouseLeave?:() => void}):JSX.Element {
 
   return (
-    <article className="cities__card place-card" onMouseEnter={onMouseOver}>
+    <article className="cities__card place-card" onMouseEnter={onMouseOver} onMouseLeave={onMouseLeave}>
       {data.isPremium ?
-        <div className="place-card__mark">
+        <div className="place-card__mark">Ё
           <span>Premium</span>
         </div> : null}
       <div className="cities__image-wrapper place-card__image-wrapper">
