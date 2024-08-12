@@ -4,6 +4,8 @@ import { Helmet } from 'react-helmet-async';
 import Map from '../../components/map/map';
 import { CITIES_MOCKS} from '../../mock/city';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeActiveCity } from '../../store/actions';
 
 export type MainScreenProps = {
   dataOffers: CardProps[];
@@ -18,7 +20,10 @@ function MainPage({dataOffers}:MainScreenProps):JSX.Element {
     setSelectedPoint(undefined);
   };
   const [activeCity, setActiveCity] = useState(CITIES_MOCKS[0]);
+  const city = useSelector((state)=> state);
+  console.log(city);
   const [cityOffers,setCityOffers] = useState(dataOffers.filter((offer) => offer.city.name === activeCity.title));
+  const dispatch = useDispatch();
   return (
     <>
       <Helmet>
@@ -33,8 +38,9 @@ function MainPage({dataOffers}:MainScreenProps):JSX.Element {
               {CITIES_MOCKS.map((item, id) =>(
                 //eslint-disable-next-line react/no-array-index-key
                 <li className="locations__item" key={id} onClick={() => {
-                  setActiveCity(item);
+                  // setActiveCity(item);
                   setCityOffers(dataOffers.filter((offer) => offer.city.name === item.title));
+                  dispatch(changeActiveCity({currentCity:item.title}));
                 }}
                 >
                   <a className={`locations__item-link tabs__item ${item === activeCity ? 'tabs__item--active' : ''}`}>

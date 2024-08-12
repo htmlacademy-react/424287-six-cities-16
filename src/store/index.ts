@@ -1,4 +1,4 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { reducer } from '../features/rental/rentalSlice';
+import { reducer } from './reducer';
 
-export const store = configureStore({reducer:{rental: reducer}});
+export const store = configureStore({reducer});
