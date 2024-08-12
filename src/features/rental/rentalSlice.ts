@@ -26,3 +26,4 @@ export const counterSlice = createSlice({
 });
 
 export const {setCurrentCity, setOfers} = counterSlice.actions;
+export const {actions, reducer} = counterSlice;
