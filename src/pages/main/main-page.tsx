@@ -17,7 +17,7 @@ function MainPage({dataOffers}:MainScreenProps):JSX.Element {
   const handleMouseLeave = () => {
     setSelectedPoint(undefined);
   };
-  const [activeCity, setActiveCity] = useState(CITIES_MOCKS[3]);
+  const [activeCity, setActiveCity] = useState(CITIES_MOCKS[0]);
   const [cityOffers,setCityOffers] = useState(dataOffers.filter((offer) => offer.city.name === activeCity.title));
   return (
     <>
