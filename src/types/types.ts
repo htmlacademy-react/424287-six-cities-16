@@ -1,3 +1,5 @@
+import {store} from '../store/index.js';
+
 export type City = {
     title: string;
     lat: number;
@@ -12,3 +14,7 @@ export type Point = {
   };
 
 export type Points = Point[];
+
+export type State = ReturnType<typeof store.getState>;
+
+export type AppDispatch = typeof store.dispatch

@@ -4,8 +4,9 @@ import { Helmet } from 'react-helmet-async';
 import Map from '../../components/map/map';
 import { CITIES_MOCKS} from '../../mock/city';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { changeActiveCity } from '../../store/actions';
+import { useDispatch } from 'react-redux';
+import { changeActiveCity, changeOfferData } from '../../store/actions';
+import { useAppSelector } from '../../hooks';
 
 export type MainScreenProps = {
   dataOffers: CardProps[];
@@ -20,9 +21,11 @@ function MainPage({dataOffers}:MainScreenProps):JSX.Element {
     setSelectedPoint(undefined);
   };
   const [activeCity, setActiveCity] = useState(CITIES_MOCKS[0]);
-  const city = useSelector((state)=> state);
-  console.log(city);
-  const [cityOffers,setCityOffers] = useState(dataOffers.filter((offer) => offer.city.name === activeCity.title));
+  const city = useAppSelector((state)=> state.currentCity);
+  const offerData = useAppSelector((state) => state.DATA);
+  console.log(offerData);
+  // console.log(city);
+  // const [cityOffers,setCityOffers] = useState(dataOffers.filter((offer) => offer.city.name === city));
   const dispatch = useDispatch();
   return (
     <>
@@ -38,12 +41,11 @@ function MainPage({dataOffers}:MainScreenProps):JSX.Element {
               {CITIES_MOCKS.map((item, id) =>(
                 //eslint-disable-next-line react/no-array-index-key
                 <li className="locations__item" key={id} onClick={() => {
-                  // setActiveCity(item);
-                  setCityOffers(dataOffers.filter((offer) => offer.city.name === item.title));
-                  dispatch(changeActiveCity({currentCity:item.title}));
+                  dispatch(changeActiveCity({currentCity:item.title, DATA:dataOffers}));
+                  dispatch(changeOfferData({currentCity:item.title, DATA:dataOffers}));
                 }}
                 >
-                  <a className={`locations__item-link tabs__item ${item === activeCity ? 'tabs__item--active' : ''}`}>
+                  <a className={`locations__item-link tabs__item ${item.title === city ? 'tabs__item--active' : ''}`}>
                     <span>{item.title}</span>
                   </a>
                 </li>))}
@@ -55,7 +57,7 @@ function MainPage({dataOffers}:MainScreenProps):JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{dataOffers.length} places to stay in {activeCity.title}</b>
+              <b className="places__found">{offerData.length === 0 ? 'No places to stay available' : `${offerData.length} places to stay in ${city}`}</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -71,11 +73,12 @@ function MainPage({dataOffers}:MainScreenProps):JSX.Element {
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <CardList dataOffers={cityOffers} onHover={handleMouseOver} onHandlerMouseLeave={handleMouseLeave} />
+              <CardList dataOffers={offerData} onHover={handleMouseOver} onHandlerMouseLeave={handleMouseLeave} />
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map city={activeCity} points={dataOffers} selectedPoint={selectedPoint} />
+                {offerData.length !== 0 ? <Map city={activeCity} points={offerData} selectedPoint={selectedPoint} /> : ''}
+                {/* <Map city={activeCity} points={dataOffers} selectedPoint={selectedPoint} /> */}
               </section>
             </div>
           </div>

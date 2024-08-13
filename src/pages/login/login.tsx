@@ -1,11 +1,9 @@
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { AppRoute } from '../../const';
-import {useSelector } from 'react-redux';
 
 function Login(): JSX.Element {
-  const city = useSelector((state)=> state);
-  console.log(city);
+
   return (
     <main className="page__main page__main--login">
       <Helmet>
