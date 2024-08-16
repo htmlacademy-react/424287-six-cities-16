@@ -1,31 +1,33 @@
 import CardList from '../../components/card-list/card-list';
-import { CardProps } from '../../components/card/card';
 import { Helmet } from 'react-helmet-async';
 import Map from '../../components/map/map';
 import { CITIES_MOCKS} from '../../mock/city';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { changeActiveCity, changeOfferData } from '../../store/actions';
+import { changeActiveCity } from '../../store/actions';
 import { useAppSelector } from '../../hooks';
+import { CardProps } from '../../components/card/card';
+import { getActiveOffersLength } from '../../utils';
 
-export type MainScreenProps = {
-  dataOffers: CardProps[];
-}
-
-function MainPage({dataOffers}:MainScreenProps):JSX.Element {
+function MainPage():JSX.Element {
   const [selectedPoint, setSelectedPoint] = useState<string|undefined>(undefined);
+  const activeCity = useAppSelector((state)=> state.currentCity);
+  const offerData = useAppSelector((state) => state.offersData);
+  const [filteredOffers, setFilteredOffers] = useState<CardProps[]|undefined>();
+
+  useEffect(()=> {
+    if(activeCity && offerData) {
+      setFilteredOffers(
+        offerData.filter((offer) => offer.city.name === activeCity.title)
+      );
+    }
+  }, [activeCity, offerData]);
   const handleMouseOver = (id:string) => {
     setSelectedPoint(id);
   };
   const handleMouseLeave = () => {
     setSelectedPoint(undefined);
   };
-  const [activeCity, setActiveCity] = useState(CITIES_MOCKS[0]);
-  const city = useAppSelector((state)=> state.currentCity);
-  const offerData = useAppSelector((state) => state.DATA);
-  console.log(offerData);
-  // console.log(city);
-  // const [cityOffers,setCityOffers] = useState(dataOffers.filter((offer) => offer.city.name === city));
   const dispatch = useDispatch();
   return (
     <>
@@ -41,11 +43,11 @@ function MainPage({dataOffers}:MainScreenProps):JSX.Element {
               {CITIES_MOCKS.map((item, id) =>(
                 //eslint-disable-next-line react/no-array-index-key
                 <li className="locations__item" key={id} onClick={() => {
-                  dispatch(changeActiveCity({currentCity:item.title, DATA:dataOffers}));
-                  dispatch(changeOfferData({currentCity:item.title, DATA:dataOffers}));
+                  dispatch(changeActiveCity({currentCity:item, offersData:offerData}));
+                  // dispatch(changeOfferData({currentCity:item.title, offerData:dataOffers}));
                 }}
                 >
-                  <a className={`locations__item-link tabs__item ${item.title === city ? 'tabs__item--active' : ''}`}>
+                  <a className={`locations__item-link tabs__item ${item.title === activeCity.title ? 'tabs__item--active' : ''}`}>
                     <span>{item.title}</span>
                   </a>
                 </li>))}
@@ -57,7 +59,7 @@ function MainPage({dataOffers}:MainScreenProps):JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{offerData.length === 0 ? 'No places to stay available' : `${offerData.length} places to stay in ${city}`}</b>
+              <b className="places__found">{filteredOffers?.length === 0 ? 'No places to stay available' : `${filteredOffers?.length} ${getActiveOffersLength(filteredOffers?.length)} to stay in ${activeCity.title}`}</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -73,12 +75,11 @@ function MainPage({dataOffers}:MainScreenProps):JSX.Element {
                   <li className="places__option" tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <CardList dataOffers={offerData} onHover={handleMouseOver} onHandlerMouseLeave={handleMouseLeave} />
+              {filteredOffers && filteredOffers.length > 0 && (<CardList dataOffers={filteredOffers} onHover={handleMouseOver} onHandlerMouseLeave={handleMouseLeave} />)}
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                {offerData.length !== 0 ? <Map city={activeCity} points={offerData} selectedPoint={selectedPoint} /> : ''}
-                {/* <Map city={activeCity} points={dataOffers} selectedPoint={selectedPoint} /> */}
+                {filteredOffers && filteredOffers.length !== 0 && (<Map city={activeCity} points={offerData} selectedPoint={selectedPoint} />) }
               </section>
             </div>
           </div>
