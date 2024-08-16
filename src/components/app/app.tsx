@@ -2,8 +2,6 @@ import { BrowserRouter, Routes,Route } from 'react-router-dom';
 import { AuthorizationStatus} from '../../const';
 import { AppRoute } from '../../const';
 import { HelmetProvider } from 'react-helmet-async';
-import { DATA, OFFERS_DATA } from '../../mock/offers';
-
 import MainPage from '../../pages/main/main-page';
 import ErrorPage from '../error-page/error-page';
 import Favourites from '../../pages/favourites/favourites';
@@ -19,11 +17,11 @@ function App(): JSX.Element {
         <Routes>
           <Route path={AppRoute.Root} element={<Layout/>}>
             <Route
-              index element={ <MainPage dataOffers = {DATA}/>}
+              index element={ <MainPage/>}
             />
             <Route
               path={AppRoute.Favorites}
-              element={ <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}><Favourites dataOffers = {DATA} /></PrivateRoute>}
+              element={ <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}><Favourites /></PrivateRoute>}
             />
             <Route
               path={AppRoute.Login}
@@ -31,7 +29,7 @@ function App(): JSX.Element {
             />
             <Route
               path={AppRoute.Offer}
-              element={ <Offer dataOffer={OFFERS_DATA}/>}
+              element={ <Offer />}
             />
             <Route
               path="*"

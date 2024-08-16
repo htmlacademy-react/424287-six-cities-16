@@ -1,11 +1,13 @@
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { MainScreenProps } from '../main/main-page';
 import { getOfferCardsByCity } from '../../utils';
 import { AppRoute } from '../../const';
+import { useAppSelector } from '../../hooks';
 
-function Favourites({dataOffers}:MainScreenProps): JSX.Element {
-  const offerCardsByCity = getOfferCardsByCity(dataOffers);
+function Favourites(): JSX.Element {
+  const offerData = useAppSelector((state) => state.offersData);
+
+  const offerCardsByCity = getOfferCardsByCity(offerData);
 
   return (
     <main className="page__main page__main--favorites">

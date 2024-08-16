@@ -4,8 +4,9 @@ import Form from './components/form/form';
 // import { capitalizeFirstLetter } from '../../utils';
 import { CardProps } from '../../components/card/card';
 import ErrorPage from '../../components/error-page/error-page';
+import { useAppSelector } from '../../hooks';
 
- type OfferCards = Omit<CardProps, 'previewImage'> & {
+export type OfferCards = Omit<CardProps, 'previewImage'> & {
   description: string;
   bedrooms: number;
   goods: string[];
@@ -18,8 +19,9 @@ import ErrorPage from '../../components/error-page/error-page';
   maxAdults: number;
  }
 
-function Offer({dataOffer}:{dataOffer:OfferCards[]}):JSX.Element {
+function Offer():JSX.Element {
   const {id:offerId} = useParams();
+  const dataOffer = useAppSelector((state) => state.offersFullData);
   const currentOffer = dataOffer.find((item)=> item.id === offerId);
   const otherOffer = dataOffer.filter((item) => item.id !== currentOffer?.id);
   if(currentOffer === undefined) {

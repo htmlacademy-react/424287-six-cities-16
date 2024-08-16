@@ -33,14 +33,14 @@ export const CITIES_MOCKS = [{
 },
 {
   title: 'Hamburg',
-  lat: 52.35514938496378,
-  lng: 4.673877537499948,
+  lat: 53.34311,
+  lng: 10.0551,
   zoom: 8
 },
 {
   title: 'Dusseldorf',
-  lat: 52.35514938496378,
-  lng: 4.673877537499948,
+  lat: 51.1352,
+  lng: 6.4621,
   zoom: 8
 }
 ];
