@@ -1,7 +1,7 @@
 import { createReducer} from '@reduxjs/toolkit';
 import { changeActiveCity, setOffersData} from './actions';
-import { DATA, OFFERS_DATA } from '../mock/offers';
-import { CITIES_MOCKS } from '../mock/city';
+// import { DATA, OFFERS_DATA } from '../mock/offers';
+// import { CITIES_MOCKS } from '../mock/city';
 
 const initialState = {
   currentCity: CITIES_MOCKS[0],
