@@ -1,13 +1,22 @@
 import { createReducer} from '@reduxjs/toolkit';
-import { changeActiveCity, setOffersData} from './actions';
-import { DATA, OFFERS_DATA } from '../mock/offers';
+import { changeActiveCity, setOffersData,setOffersDataLoadingStatus } from './actions';
 import { CITIES_MOCKS } from '../mock/city';
+import { City } from '../types/types';
+import { CardProps } from '../components/card/card';
+import { OfferCards } from '../pages/offer/offer';
 
-const initialState = {
+interface initialStateProps {
+  currentCity: City;
+  offersData: undefined | CardProps[];
+  offersFullData: undefined | OfferCards[];
+  isOffersDataLoading: boolean;
+}
+
+const initialState: initialStateProps = {
   currentCity: CITIES_MOCKS[0],
-  offersData: DATA,
-  offersFullData: OFFERS_DATA
-
+  offersData: undefined,
+  offersFullData: undefined,
+  isOffersDataLoading: false,
 };
 
 export const reducer = createReducer(initialState,(builder) => {
@@ -16,8 +25,12 @@ export const reducer = createReducer(initialState,(builder) => {
       state.currentCity = action.payload.currentCity;
     })
     .addCase(setOffersData,(state,action)=>{
-      state.offersFullData = action.payload.offersFullData;
+      state.offersData = action.payload;
+    })
+    .addCase(setOffersDataLoadingStatus, (state, action) => {
+      state.isOffersDataLoading = action.payload;
     });
+
 });
 
 

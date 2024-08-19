@@ -14,7 +14,6 @@ function MainPage():JSX.Element {
   const activeCity = useAppSelector((state)=> state.currentCity);
   const offerData = useAppSelector((state) => state.offersData);
   const [filteredOffers, setFilteredOffers] = useState<CardProps[]|undefined>();
-
   useEffect(()=> {
     if(activeCity && offerData) {
       setFilteredOffers(
@@ -43,8 +42,7 @@ function MainPage():JSX.Element {
               {CITIES_MOCKS.map((item, id) =>(
                 //eslint-disable-next-line react/no-array-index-key
                 <li className="locations__item" key={id} onClick={() => {
-                  dispatch(changeActiveCity({currentCity:item, offersData:offerData}));
-                  // dispatch(changeOfferData({currentCity:item.title, offerData:dataOffers}));
+                  dispatch(changeActiveCity({currentCity:item}));
                 }}
                 >
                   <a className={`locations__item-link tabs__item ${item.title === activeCity.title ? 'tabs__item--active' : ''}`}>
@@ -79,7 +77,7 @@ function MainPage():JSX.Element {
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                {filteredOffers && filteredOffers.length !== 0 && (<Map city={activeCity} points={offerData} selectedPoint={selectedPoint} />) }
+                {filteredOffers && filteredOffers.length !== 0 && (<Map city={activeCity} points={filteredOffers} selectedPoint={selectedPoint} />) }
               </section>
             </div>
           </div>

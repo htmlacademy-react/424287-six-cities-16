@@ -22,8 +22,8 @@ export type OfferCards = Omit<CardProps, 'previewImage'> & {
 function Offer():JSX.Element {
   const {id:offerId} = useParams();
   const dataOffer = useAppSelector((state) => state.offersFullData);
-  const currentOffer = dataOffer.find((item)=> item.id === offerId);
-  const otherOffer = dataOffer.filter((item) => item.id !== currentOffer?.id);
+  const currentOffer = dataOffer?.find((item)=> item.id === offerId);
+  const otherOffer = dataOffer?.filter((item) => item.id !== currentOffer?.id);
   if(currentOffer === undefined) {
     return (<ErrorPage/>);
   } else {
