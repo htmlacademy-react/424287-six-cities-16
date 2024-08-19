@@ -9,8 +9,16 @@ import Login from '../../pages/login/login';
 import Offer from '../../pages/offer/offer';
 import PrivateRoute from '../private-route/private-route';
 import Layout from '../layout/layout';
+import LoadingScreen from '../loading-screen/loading-screen';
+import { useAppSelector } from '../../hooks';
 
 function App(): JSX.Element {
+  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
+  if (isOffersDataLoading) {
+    return (
+      < LoadingScreen />
+    );
+  }
   return (
     <HelmetProvider>
       <BrowserRouter>
