@@ -1,4 +1,4 @@
-import axios, {AxiosInstance, AxiosRequestConfig, AxiosError, AxiosResponse} from 'axios';
+import axios, {AxiosInstance, AxiosError, AxiosResponse} from 'axios';
 import { getToken } from './token';
 import {toast} from 'react-toastify';
 import { StatusCodes } from 'http-status-codes';
@@ -25,7 +25,7 @@ export const createAPI = (): AxiosInstance => {
   });
 
   api.interceptors.request.use(
-    (config:AxiosRequestConfig) => {
+    (config) => {
       const token = getToken();
 
       if (token && config.headers) {
