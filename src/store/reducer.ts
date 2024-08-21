@@ -28,7 +28,7 @@ export const reducer = createReducer(initialState,(builder) => {
       state.currentCity = action.payload.currentCity;
     })
     .addCase(setOffersData,(state,action)=>{
-      state.offersData = action.payload;
+      state.offersData = action.payload.offersData;
     })
     .addCase(setOffersDataLoadingStatus, (state, action) => {
       state.isOffersDataLoading = action.payload;

@@ -10,8 +10,8 @@ export const fetchOfferAction = createAsyncThunk<void, undefined, {dispatch: App
   'fetchOffers',
   async (_arg, {dispatch, extra: api}) => {
     dispatch(setOffersDataLoadingStatus(true));
-    const {data} = await api.get<{offersData: CardProps[]}>(APIRoute.Offers);
-    dispatch(setOffersData(data));
+    const { data } = await api.get<CardProps[]>(APIRoute.Offers);
+    dispatch(setOffersData({ offersData: data }));
     dispatch(setOffersDataLoadingStatus(false));
 
   },

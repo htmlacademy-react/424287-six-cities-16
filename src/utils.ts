@@ -15,8 +15,7 @@ export const getOfferCardsByCity = (offerCards:CardProps[]) => {
       offerCardsByCity[card.city.name].push(card);
     }
   }
-
   return offerCardsByCity;
 };
 
-export const getActiveOffersLength = (count: number | undefined): string => `place${count > 1 ? 's' : ''}`;
+export const getActiveOffersLength = (count: number): string => `place${count > 1 ? 's' : ''}`;

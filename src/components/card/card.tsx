@@ -58,7 +58,7 @@ function Card({data,onMouseOver,onMouseLeave} :{data: CardProps; onMouseOver?:()
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`/offer/${data.id}`}>{data.title}</Link>
+          <Link to={`${AppRoute.Offer}/${data.id}`}>{data.title}</Link>
         </h2>
         <p className="place-card__type">{data.type}</p>
       </div>
