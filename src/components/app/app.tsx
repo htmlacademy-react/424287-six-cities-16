@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes,Route } from 'react-router-dom';
+import { Routes,Route } from 'react-router-dom';
 import { AuthorizationStatus} from '../../const';
 import { AppRoute } from '../../const';
 import { HelmetProvider } from 'react-helmet-async';
@@ -11,9 +11,12 @@ import PrivateRoute from '../private-route/private-route';
 import Layout from '../layout/layout';
 import LoadingScreen from '../loading-screen/loading-screen';
 import { useAppSelector } from '../../hooks';
+import browserHistory from '../../browser-history';
+import HistoryRouter from '../history-route/history-route';
 
 function App(): JSX.Element {
   const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
+
   if (isOffersDataLoading) {
     return (
       < LoadingScreen />
@@ -21,7 +24,7 @@ function App(): JSX.Element {
   }
   return (
     <HelmetProvider>
-      <BrowserRouter>
+      <HistoryRouter history={browserHistory}>
         <Routes>
           <Route path={AppRoute.Root} element={<Layout/>}>
             <Route
@@ -29,7 +32,7 @@ function App(): JSX.Element {
             />
             <Route
               path={AppRoute.Favorites}
-              element={ <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}><Favourites /></PrivateRoute>}
+              element={ <PrivateRoute authorizationStatus={AuthorizationStatus.NoAuth}><Favourites /></PrivateRoute>}
             />
             <Route
               path={AppRoute.Login}
@@ -45,7 +48,7 @@ function App(): JSX.Element {
             />
           </Route>
         </Routes>
-      </BrowserRouter>
+      </HistoryRouter>
     </HelmetProvider>
   );
 }

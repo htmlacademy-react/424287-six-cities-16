@@ -6,9 +6,10 @@ import { store } from './store';
 import { fetchOfferAction} from './store/api-actions';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { checkAuthAction } from './store/api-actions';
 
 store.dispatch(fetchOfferAction());
-// store.dispatch(checkAuthAction());
+store.dispatch(checkAuthAction());
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -22,3 +23,5 @@ root.render(
     </Provider>
   </React.StrictMode>
 );
+
+
