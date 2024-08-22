@@ -10,6 +10,7 @@ import { CardProps } from '../../components/card/card';
 import { getActiveOffersLength } from '../../utils';
 
 function MainPage():JSX.Element {
+
   const [selectedPoint, setSelectedPoint] = useState<string|undefined>(undefined);
   const activeCity = useAppSelector((state)=> state.currentCity);
   const offerData = useAppSelector((state) => state.offersData);

@@ -2,9 +2,10 @@ import {AxiosInstance} from 'axios';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import { AppDispatch, State, UserData, AuthData } from '../types/types';
 import { APIRoute, AppRoute, AuthorizationStatus } from '../const';
-import { redirectToRoute, requireAuthorization, setOffersData, setOffersDataLoadingStatus } from './actions';
+import { redirectToRoute, requireAuthorization, setOffersData, setOffersDataLoadingStatus, setOffersFullData } from './actions';
 import { CardProps } from '../components/card/card';
 import { dropToken, saveToken } from '../services/token';
+import { OfferCards } from '../pages/offer/offer';
 
 export const fetchOfferAction = createAsyncThunk<void, undefined, {dispatch: AppDispatch; state: State; extra: AxiosInstance}>(
   'fetchOffers',
@@ -46,5 +47,16 @@ export const logoutAction = createAsyncThunk<void, undefined, {dispatch: AppDisp
     await api.delete(APIRoute.Logout);
     dropToken();
     dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+  },
+);
+
+export const fetchCurrentOfferAction = createAsyncThunk<void, undefined, {dispatch: AppDispatch; state: State; extra: AxiosInstance}>(
+  'fetchAllOffers',
+  async (_arg, {dispatch, extra: api}) => {
+    dispatch(setOffersDataLoadingStatus(true));
+    const { data } = await api.get<OfferCards[]>(APIRoute.CurrentOffer);
+    dispatch(setOffersFullData({ offersFullData: data }));
+    dispatch(setOffersDataLoadingStatus(false));
+
   },
 );

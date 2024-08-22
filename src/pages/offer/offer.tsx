@@ -5,6 +5,7 @@ import Form from './components/form/form';
 import { CardProps } from '../../components/card/card';
 import ErrorPage from '../../components/error-page/error-page';
 import { useAppSelector } from '../../hooks';
+import { AuthorizationStatus } from '../../const';
 
 export type OfferCards = Omit<CardProps, 'previewImage'> & {
   description: string;
@@ -24,6 +25,7 @@ function Offer():JSX.Element {
   const dataOffer = useAppSelector((state) => state.offersFullData);
   const currentOffer = dataOffer?.find((item)=> item.id === offerId);
   const otherOffer = dataOffer?.filter((item) => item.id !== currentOffer?.id);
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   if(currentOffer === undefined) {
     return (<ErrorPage/>);
   } else {
@@ -135,7 +137,9 @@ function Offer():JSX.Element {
                     </div>
                   </li>
                 </ul>
-                {<Form/>}
+                {// eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
+                  authorizationStatus !== AuthorizationStatus.Auth && <Form/>
+                }
               </section>
             </div>
           </div>
