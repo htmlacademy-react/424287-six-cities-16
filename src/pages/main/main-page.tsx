@@ -89,7 +89,7 @@ function MainPage():JSX.Element {
                     {SORTING.map((sort: Sorting) => (
                       <li className={`places__option ${selectedSorting === sort ? 'places__option--active' : ''}`}
                         tabIndex={0}
-                        key={selectedSorting}
+                        key={sort}
                         onClick={() => handleSelectedSorting(sort)}
                       >
                         {sort}

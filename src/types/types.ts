@@ -25,6 +25,20 @@ export type CardProps = {
   previewImage: string;
 }
 
+
+export type OfferCard = Omit<CardProps, 'previewImage'> & {
+  description: string;
+  bedrooms: number;
+  goods: string[];
+  host: {
+  name: string;
+  avatarUrl: string;
+  isPro: boolean;
+  };
+  images: string[];
+  maxAdults: number;
+ }
+
 export type City = {
     title: string;
     lat: number;

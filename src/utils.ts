@@ -6,6 +6,13 @@ type OfferCardByCity = {
 }
 
 import { Sorting } from './types/types';
+import dayjs from 'dayjs';
+
+
+const DateFormat = {
+  DAY_FORMAT: 'MMMM D',
+  MACHINE_FORMAT: 'YYYY-MM-DD',
+} ;
 
 export const getOfferCardsByCity = (offerCards:CardProps[]) => {
   const offerCardsByCity: OfferCardByCity = {};
@@ -40,3 +47,7 @@ export const getSortedOffers = ({filteredOffers, sort}: {
       return filteredOffers;
   }
 };
+
+export const humanizeDueDate = (dueDate:string) => dueDate ? dayjs(dueDate).format(DateFormat.DAY_FORMAT) : '';
+export const machineDueFormat = (dueDate:string) => dueDate ? dayjs(dueDate).format(DateFormat.MACHINE_FORMAT) : '';
+

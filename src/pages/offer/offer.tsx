@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Form from './components/form/form';
 // import { capitalizeFirstLetter } from '../../utils';
-import { CardProps, UserData } from '../../types/types';
+import { CardProps, OfferCard, UserData } from '../../types/types';
 import ErrorPage from '../../components/error-page/error-page';
 import { useAppSelector } from '../../hooks';
 import { APIRoute, AppRoute, AuthorizationStatus } from '../../const';
@@ -11,20 +11,8 @@ import { api } from '../../store';
 import LoadingScreen from '../../components/loading-screen/loading-screen';
 import Map from '../../components/map/map';
 import { getCount } from '../../utils';
-
-
-export type OfferCards = Omit<CardProps, 'previewImage'> & {
-  description: string;
-  bedrooms: number;
-  goods: string[];
-  host: {
-  name: string;
-  avatarUrl: string;
-  isPro: boolean;
-  };
-  images: string[];
-  maxAdults: number;
- }
+import { humanizeDueDate,machineDueFormat } from '../../utils';
+import { FormDataProps } from './components/form/form';
 
 export interface Comment {
   id: string;
@@ -38,12 +26,21 @@ function Offer():JSX.Element {
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const navigate = useNavigate();
 
-  const [currentOffer, setCurrentOffer] = useState<OfferCards | undefined >();
+  const [currentOffer, setCurrentOffer] = useState<OfferCard | undefined >();
   const [otherOffer, setOtherOffer] = useState<CardProps[] | undefined >();
   const [comments, setComments] = useState<Comment[] | undefined >();
 
   const activeCity = useAppSelector((state)=> state.currentCity);
+  const getComments = async () => {
+    const {data:commentsData} = await api.get<Comment[]>(`${APIRoute.Comments}/${offerId}`);
+    setComments(commentsData);
 
+  };
+  const onHandleSubmitForm = async (data: FormDataProps) => {
+    await api.post<FormDataProps>(`${APIRoute.Comments}/${offerId}`, data);
+    getComments();
+  };
+ 
   // const onHandleFavoriteAdd = () => {
 
   // }
@@ -51,19 +48,18 @@ function Offer():JSX.Element {
     if(offerId) {
       (async () => {
         try {
-          const {data:currentOfferData} = await api.get<OfferCards>(`${APIRoute.CurrentOffer}/${offerId}`);
+          const {data:currentOfferData} = await api.get<OfferCard>(`${APIRoute.CurrentOffer}/${offerId}`);
           const {data:otherOfferData} = await api.get<CardProps[]>(`${APIRoute.CurrentOffer}/${offerId}/nearby`);
-          const {data:commentsData} = await api.get<Comment[]>(`${APIRoute.Comments}/${offerId}`);
           setCurrentOffer(currentOfferData);
           setOtherOffer(otherOfferData);
-          setComments(commentsData);
+          getComments();
         } catch {
           navigate('/error');
         }
 
       })();
     }
-  }, [navigate, offerId]);
+  }, [ navigate, offerId]);
 
   if(!currentOffer) {
     return (<LoadingScreen />);
@@ -157,9 +153,9 @@ function Offer():JSX.Element {
                 </p>
               </div>
             </div>
-            {comments && comments?.length > 0 && (
+            {comments && comments.length > 0 && (
               <section className="offer__reviews reviews">
-                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{comments?.length}</span></h2>
+                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{comments.length}</span></h2>
                 <ul className="reviews__list">
                   {comments.slice(0,10).map((item) => (
                     <li className="reviews__item" key={item.id}>
@@ -181,13 +177,14 @@ function Offer():JSX.Element {
                         <p className="reviews__text">
                           {item.comment}
                         </p>
-                        <time className="reviews__time" dateTime="2019-04-24">{new Date(item.date).getMonth() } {new Date(item.date).getFullYear() }  </time>
+                        <time className="reviews__time" dateTime={machineDueFormat(item.date)}>{humanizeDueDate(item.date)}
+                        </time>
                       </div>
                     </li>))}
 
                 </ul>
                 {// eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
-                  authorizationStatus === AuthorizationStatus.Auth && <Form/>
+                  authorizationStatus === AuthorizationStatus.Auth && <Form onHandleSubmitForm={onHandleSubmitForm}/>
                 }
               </section>)}
           </div>

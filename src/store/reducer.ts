@@ -3,13 +3,13 @@ import { changeActiveCity, setOffersData,setOffersDataLoadingStatus, requireAuth
 import { CITIES_MOCKS } from '../mock/city';
 import { City, UserData } from '../types/types';
 import { CardProps } from '../types/types';
-import { OfferCards } from '../pages/offer/offer';
+import { OfferCard } from '../types/types';
 import { AuthorizationStatus } from '../const';
 
 interface initialStateProps {
   currentCity: City;
   offersData: undefined | CardProps[];
-  offersFullData: undefined | OfferCards[];
+  offersFullData: undefined | OfferCard[];
   isOffersDataLoading: boolean;
   authorizationStatus:string;
   user: undefined | UserData;
