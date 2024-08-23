@@ -2,7 +2,8 @@ export enum AppRoute {
     Root = '/',
     Login = 'login',
     Favorites = 'favorites',
-    Offer = 'offer'
+    Offer = 'offer',
+    OfferDetail = 'offer/:id'
   }
 
 export enum AuthorizationStatus {
@@ -13,9 +14,12 @@ export enum AuthorizationStatus {
 
 export enum APIRoute {
     Offers = 'offers',
-    CurrentOffer = '/{offerId}',
-    NearByOffers = '/offers/{offerId}/nearby',
+    CurrentOffer = '/offers',
+    NearByOffers = '/nearby',
     Favorite = '/favorite',
     Login = '/login',
-    Logout = '/logout'
+    Logout = '/logout',
+    Comments = '/comments'
   }
+
+export const SORTING = ['Popular', 'Price: low to high', 'Price: high to low', 'Top rated first'] as const;

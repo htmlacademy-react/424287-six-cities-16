@@ -1,29 +1,6 @@
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
-
-export type CardProps = {
-  id: string;
-  title: string;
-  type: string;
-  price: number;
-  city: {
-      name: string;
-      location: {
-          latitude: number;
-          longitude: number;
-          zoom: number;
-      };
-  };
-  location: {
-      latitude: number;
-      longitude: number;
-      zoom: number;
-  };
-  isFavorite: boolean;
-  isPremium: boolean;
-  rating: number;
-  previewImage: string;
-}
+import { CardProps } from '../../types/types';
 
 function Card({data,onMouseOver,onMouseLeave} :{data: CardProps; onMouseOver?:() => void;onMouseLeave?:() => void}):JSX.Element {
   const handleFavoriteButtonClick = () => {
@@ -32,7 +9,7 @@ function Card({data,onMouseOver,onMouseLeave} :{data: CardProps; onMouseOver?:()
   return (
     <article className="cities__card place-card" onMouseEnter={onMouseOver} onMouseLeave={onMouseLeave}>
       {data.isPremium ?
-        <div className="place-card__mark">Ё
+        <div className="place-card__mark">
           <span>Premium</span>
         </div> : null}
       <div className="cities__image-wrapper place-card__image-wrapper">

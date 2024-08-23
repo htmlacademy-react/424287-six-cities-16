@@ -6,8 +6,9 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { changeActiveCity } from '../../store/actions';
 import { useAppSelector } from '../../hooks';
-import { CardProps } from '../../components/card/card';
-import { getActiveOffersLength } from '../../utils';
+import { CardProps, Sorting } from '../../types/types';
+import { getActiveOffersLength, getSortedOffers } from '../../utils';
+import { SORTING } from '../../const';
 
 function MainPage():JSX.Element {
 
@@ -15,6 +16,8 @@ function MainPage():JSX.Element {
   const activeCity = useAppSelector((state)=> state.currentCity);
   const offerData = useAppSelector((state) => state.offersData);
   const [filteredOffers, setFilteredOffers] = useState<CardProps[]|undefined>();
+  const [isOpenSorting, setIsOpenSorting] = useState<boolean>(false);
+  const [selectedSorting, setSelectedSorting] = useState<Sorting>(SORTING[0]);
   useEffect(()=> {
     if(activeCity && offerData) {
       setFilteredOffers(
@@ -29,6 +32,18 @@ function MainPage():JSX.Element {
     setSelectedPoint(undefined);
   };
   const dispatch = useDispatch();
+  const handleVisibleSorting = () => setIsOpenSorting((open) => !open);
+
+  const handleSorting = (sort: Sorting) => {
+    const sortedOffers = getSortedOffers({filteredOffers, sort});
+    setFilteredOffers(sortedOffers);
+  };
+
+  const handleSelectedSorting = (sort: Sorting) => {
+    setSelectedSorting(sort);
+    setIsOpenSorting(false);
+    handleSorting(sort);
+  };
   return (
     <>
       <Helmet>
@@ -62,17 +77,25 @@ function MainPage():JSX.Element {
                 <b className="places__found">{`${filteredOffers?.length} ${getActiveOffersLength(filteredOffers.length)} to stay in ${activeCity.title}`}</b>
                 <form className="places__sorting" action="#" method="get">
                   <span className="places__sorting-caption">Sort by</span>
-                  <span className="places__sorting-type" tabIndex={0}>
-                  Popular
+                  <span className="places__sorting-type" tabIndex={0} onClick={handleVisibleSorting}>
+                    {selectedSorting}
                     <svg className="places__sorting-arrow" width="7" height="4">
                       <use xlinkHref="#icon-arrow-select"></use>
                     </svg>
                   </span>
-                  <ul className="places__options places__options--custom places__options--opened">
-                    <li className="places__option places__option--active" tabIndex={0}>Popular</li>
-                    <li className="places__option" tabIndex={0}>Price: low to high</li>
-                    <li className="places__option" tabIndex={0}>Price: high to low</li>
-                    <li className="places__option" tabIndex={0}>Top rated first</li>
+                  <ul
+                    className={`places__options places__options--custom ${isOpenSorting ? 'places__options--opened' : ''}`}
+                  >
+                    {SORTING.map((sort: Sorting) => (
+                      <li className={`places__option ${selectedSorting === sort ? 'places__option--active' : ''}`}
+                        tabIndex={0}
+                        key={selectedSorting}
+                        onClick={() => handleSelectedSorting(sort)}
+                      >
+                        {sort}
+                      </li>
+                    )
+                    )}
                   </ul>
                 </form>
                 {filteredOffers && filteredOffers.length > 0 && (<CardList dataOffers={filteredOffers} onHover={handleMouseOver} onHandlerMouseLeave={handleMouseLeave} />)}

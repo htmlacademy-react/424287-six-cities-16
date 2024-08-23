@@ -39,7 +39,7 @@ function App(): JSX.Element {
               element={ <Login/>}
             />
             <Route
-              path={AppRoute.Offer}
+              path={AppRoute.OfferDetail}
               element={ <Offer />}
             />
             <Route

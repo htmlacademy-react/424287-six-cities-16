@@ -1,4 +1,5 @@
-import Card, { CardProps } from '../card/card';
+import Card from '../card/card';
+import { CardProps } from '../../types/types';
 
 type MainScreenProps = {
   dataOffers: CardProps[];
