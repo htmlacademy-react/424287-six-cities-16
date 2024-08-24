@@ -18,6 +18,7 @@ function MainPage():JSX.Element {
   const [filteredOffers, setFilteredOffers] = useState<CardProps[]|undefined>();
   const [isOpenSorting, setIsOpenSorting] = useState<boolean>(false);
   const [selectedSorting, setSelectedSorting] = useState<Sorting>(SORTING[0]);
+
   useEffect(()=> {
     if(activeCity && offerData) {
       setFilteredOffers(
@@ -25,13 +26,13 @@ function MainPage():JSX.Element {
       );
     }
   }, [activeCity, offerData]);
+
   const handleMouseOver = (id:string) => {
     setSelectedPoint(id);
   };
   const handleMouseLeave = () => {
     setSelectedPoint(undefined);
   };
-  const dispatch = useDispatch();
   const handleVisibleSorting = () => setIsOpenSorting((open) => !open);
 
   const handleSorting = (sort: Sorting) => {
@@ -44,6 +45,9 @@ function MainPage():JSX.Element {
     setIsOpenSorting(false);
     handleSorting(sort);
   };
+
+  const dispatch = useDispatch();
+
   return (
     <>
       <Helmet>

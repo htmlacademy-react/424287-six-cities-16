@@ -49,3 +49,4 @@ export const logoutAction = createAsyncThunk<void, undefined, {dispatch: AppDisp
     dispatch(requireAuthorization({userData: undefined, authStatus: AuthorizationStatus.NoAuth}));
   },
 );
+

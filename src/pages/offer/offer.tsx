@@ -29,6 +29,7 @@ function Offer():JSX.Element {
   const [currentOffer, setCurrentOffer] = useState<OfferCard | undefined >();
   const [otherOffer, setOtherOffer] = useState<CardProps[] | undefined >();
   const [comments, setComments] = useState<Comment[] | undefined >();
+  const [offerStatus, setOfferStatus] = useState(true);
 
   const activeCity = useAppSelector((state)=> state.currentCity);
   const getComments = async () => {
@@ -40,10 +41,19 @@ function Offer():JSX.Element {
     await api.post<FormDataProps>(`${APIRoute.Comments}/${offerId}`, data);
     getComments();
   };
- 
-  // const onHandleFavoriteAdd = () => {
+  const getFavoriteOffers = async () => {
+    await api.get<CardProps[]>(`${APIRoute.Favorite}`);
+  };
+  const onHandleFavoriteAdd =
+    async () => {
+      getFavoriteOffers();
+      setOfferStatus(!offerStatus);
+      const status = Number(offerStatus);
+      await api.post<CardProps[]>(`${APIRoute.Favorite}/${offerId}/${status}`);
+      getFavoriteOffers();
+    };
 
-  // }
+
   useEffect(() => {
     if(offerId) {
       (async () => {
@@ -53,6 +63,7 @@ function Offer():JSX.Element {
           setCurrentOffer(currentOfferData);
           setOtherOffer(otherOfferData);
           getComments();
+          getFavoriteOffers();
         } catch {
           navigate('/error');
         }
@@ -94,7 +105,7 @@ function Offer():JSX.Element {
               </h1>
               {// eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
                 authorizationStatus === AuthorizationStatus.Auth && (
-                  <button className="offer__bookmark-button button" type="button" onClick={() => console.log('To favorite')}>
+                  <button className="offer__bookmark-button button" type="button" onClick={onHandleFavoriteAdd}>
                     <svg className="offer__bookmark-icon" width="31" height="33">
                       <use xlinkHref="#icon-bookmark"></use>
                     </svg>
