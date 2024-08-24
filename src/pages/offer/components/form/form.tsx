@@ -14,18 +14,10 @@ const DEFAULT_FORM_DATE: FormDataProps = {
 };
 
 function Form({onHandleSubmitForm}:{onHandleSubmitForm:(data:FormDataProps)=>void}):JSX.Element {
-  // const [,setRating] = useState(0);
-  // const [comment,setComment] = useState('');
-  // const [dataForm, setDataForm] = useState<{rating: number | null; comment: string}>({rating: null,comment: ''});
+
   const [isDisabledButton, setIsDisabledButton] = useState(true);
   const [formData, setformData] = useState<FormDataProps>(DEFAULT_FORM_DATE);
 
-  // const handleCommentChange = (e:React.ChangeEvent<HTMLTextAreaElement>) => {
-  //   setComment(e.target.value);
-  // };
-  // const handleRatingChange = (e:React.ChangeEvent<HTMLInputElement>) => {
-  //   setRating(Number(e.target.value));
-  // };
   const handleFieldChange = ({name, value}: { name: keyof FormDataProps; value: string }): void => {
     const newValue = name === 'rating' ? parseInt(value, 10) : value;
     const newData = {...formData, [name]: newValue};
@@ -34,6 +26,7 @@ function Form({onHandleSubmitForm}:{onHandleSubmitForm:(data:FormDataProps)=>voi
     if (newData.rating !== undefined &&
       newData.comment.length < MAX_TEXTAREA_VALUES &&
       newData.comment.length >= MIN_TEXTAREA_VALUES) {
+        console.log('1')
       setIsDisabledButton(false);
     }
   };
@@ -58,7 +51,7 @@ function Form({onHandleSubmitForm}:{onHandleSubmitForm:(data:FormDataProps)=>voi
         <p className="reviews__help">
             To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
         </p>
-        <button className="reviews__submit form__submit button" type="submit" onClick={(e) => {
+        <button className="reviews__submit form__submit button" type="submit" disabled={isDisabledButton} onClick={(e) => {
           e.preventDefault();
           onHandleSubmitForm(formData);
         }}
