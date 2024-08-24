@@ -51,3 +51,4 @@ export const getSortedOffers = ({filteredOffers, sort}: {
 export const humanizeDueDate = (dueDate:string) => dueDate ? dayjs(dueDate).format(DateFormat.DAY_FORMAT) : '';
 export const machineDueFormat = (dueDate:string) => dueDate ? dayjs(dueDate).format(DateFormat.MACHINE_FORMAT) : '';
 
+export const sortEventsBy = (comments) => [comments].sort((a, b) => dayjs(a.dateFrom).diff(dayjs(b.dateFrom)));

@@ -11,7 +11,7 @@ import { api } from '../../store';
 import LoadingScreen from '../../components/loading-screen/loading-screen';
 import Map from '../../components/map/map';
 import { getCount } from '../../utils';
-import { humanizeDueDate,machineDueFormat } from '../../utils';
+import { humanizeDueDate,machineDueFormat, sortEventsBy } from '../../utils';
 import { FormDataProps } from './components/form/form';
 
 export interface Comment {
@@ -168,7 +168,7 @@ function Offer():JSX.Element {
               <section className="offer__reviews reviews">
                 <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{comments.length}</span></h2>
                 <ul className="reviews__list">
-                  {comments.slice(0,10).map((item) => (
+                  {sortEventsBy(comments).slice(0,10).map((item) => (
                     <li className="reviews__item" key={item.id}>
                       <div className="reviews__user user">
                         <div className="reviews__avatar-wrapper user__avatar-wrapper">

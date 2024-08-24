@@ -26,7 +26,6 @@ function Form({onHandleSubmitForm}:{onHandleSubmitForm:(data:FormDataProps)=>voi
     if (newData.rating !== undefined &&
       newData.comment.length < MAX_TEXTAREA_VALUES &&
       newData.comment.length >= MIN_TEXTAREA_VALUES) {
-        console.log('1')
       setIsDisabledButton(false);
     }
   };
