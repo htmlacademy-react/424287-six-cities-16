@@ -193,7 +193,7 @@ function Offer():JSX.Element {
           </div>
         </div>
         <section className="offer__map map">
-          {otherOffer && (<Map city={activeCity} points={otherOffer.slice(0,3)} selectedPoint={currentOffer.id} />)}
+          {otherOffer && (<Map city={activeCity} points={[...otherOffer.slice(0,3),currentOffer]} selectedPoint={currentOffer.id} />)}
         </section>
       </section>
       {otherOffer && (
