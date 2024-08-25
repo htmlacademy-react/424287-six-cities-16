@@ -36,8 +36,10 @@ function MainPage():JSX.Element {
   const handleVisibleSorting = () => setIsOpenSorting((open) => !open);
 
   const handleSorting = (sort: Sorting) => {
-    const sortedOffers = getSortedOffers({filteredOffers, sort});
-    setFilteredOffers(sortedOffers);
+    if(filteredOffers && filteredOffers !== null) {
+      const sortedOffers = getSortedOffers({filteredOffers, sort});
+      setFilteredOffers(sortedOffers);
+    }
   };
 
   const handleSelectedSorting = (sort: Sorting) => {

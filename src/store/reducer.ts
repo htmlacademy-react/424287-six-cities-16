@@ -1,5 +1,5 @@
 import { createReducer} from '@reduxjs/toolkit';
-import { changeActiveCity, setOffersData,setOffersDataLoadingStatus, requireAuthorization } from './actions';
+import { changeActiveCity, setOffersData,setOffersDataLoadingStatus, requireAuthorization, setFavoriteOffersData } from './actions';
 import { CITIES_MOCKS } from '../mock/city';
 import { City, UserData } from '../types/types';
 import { CardProps } from '../types/types';
@@ -13,6 +13,7 @@ interface initialStateProps {
   isOffersDataLoading: boolean;
   authorizationStatus:string;
   user: undefined | UserData;
+  favoritesOffersData: undefined | CardProps[];
 }
 
 const initialState: initialStateProps = {
@@ -21,8 +22,8 @@ const initialState: initialStateProps = {
   offersFullData: undefined,
   isOffersDataLoading: false,
   authorizationStatus: AuthorizationStatus.Unknown,
-  user: undefined
-
+  user: undefined,
+  favoritesOffersData:undefined
 };
 
 export const reducer = createReducer(initialState,(builder) => {
@@ -39,7 +40,11 @@ export const reducer = createReducer(initialState,(builder) => {
     .addCase(requireAuthorization, (state, action) => {
       state.authorizationStatus = action.payload.authStatus;
       state.user = action.payload.userData;
+    })
+    .addCase(setFavoriteOffersData, (state, action) => {
+      state.favoritesOffersData = action.payload.favoritesOffersData;
     });
+
 });
 
 

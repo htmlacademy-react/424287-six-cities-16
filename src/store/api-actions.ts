@@ -2,7 +2,7 @@ import {AxiosInstance} from 'axios';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import { AppDispatch, State, UserData, AuthData } from '../types/types';
 import { APIRoute, AppRoute, AuthorizationStatus } from '../const';
-import { redirectToRoute, requireAuthorization, setOffersData, setOffersDataLoadingStatus } from './actions';
+import { redirectToRoute, requireAuthorization, setFavoriteOffersData, setOffersData, setOffersDataLoadingStatus } from './actions';
 import { CardProps } from '../types/types';
 import { dropToken, saveToken } from '../services/token';
 
@@ -50,3 +50,10 @@ export const logoutAction = createAsyncThunk<void, undefined, {dispatch: AppDisp
   },
 );
 
+export const fetchFavoriteOfferAction = createAsyncThunk<void, undefined, {dispatch: AppDispatch; state: State; extra: AxiosInstance}>(
+  'fetchFavoriteOffers',
+  async (_arg, {dispatch, extra: api}) => {
+    const {data} = await api.get<CardProps[]>(`${APIRoute.Favorite}`);
+    dispatch(setFavoriteOffersData({favoritesOffersData: data}));
+  },
+);

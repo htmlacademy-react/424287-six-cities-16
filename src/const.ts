@@ -15,7 +15,7 @@ export enum AuthorizationStatus {
 export enum APIRoute {
     Offers = 'offers',
     CurrentOffer = '/offers',
-    NearByOffers = '/nearby',
+    NearByOffers = 'nearby',
     Favorite = '/favorite',
     Login = '/login',
     Logout = '/logout',

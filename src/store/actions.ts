@@ -8,3 +8,5 @@ export const setOffersData = createAction<{offersData: CardProps[]}>('SET_OFFERS
 export const setOffersDataLoadingStatus = createAction<boolean>('SET_OFFERS_DATA_LOADING_STATUS');
 export const requireAuthorization = createAction<{userData: UserData | undefined ; authStatus: AuthorizationStatus}>('REQUIRE_AUTHORIZATION');
 export const redirectToRoute = createAction<AppRoute>('REDIRECT_TO_ROUTE');
+export const setFavoriteOffersData = createAction<{favoritesOffersData: CardProps[]}>('SET_FAVORITE_OFFERS_DATA');
+

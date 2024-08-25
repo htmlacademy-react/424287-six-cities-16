@@ -1,11 +1,17 @@
 import { Link } from 'react-router-dom';
-import { AppRoute } from '../../const';
+import { APIRoute, AppRoute } from '../../const';
 import { CardProps } from '../../types/types';
+import { api, store } from '../../store';
+import { fetchOfferAction } from '../../store/api-actions';
 
 function Card({data,onMouseOver,onMouseLeave} :{data: CardProps; onMouseOver?:() => void;onMouseLeave?:() => void}):JSX.Element {
-  const handleFavoriteButtonClick = () => {
-    console.log('To favorite');
+  const handleFavoriteButtonClick = async () => {
+    const offerStatus = data.isFavorite;
+    const status = Number(!offerStatus);
+    await api.post<CardProps[]>(`${APIRoute.Favorite}/${data.id}/${status}`);
+    store.dispatch(fetchOfferAction());
   };
+
   return (
     <article className="cities__card place-card" onMouseEnter={onMouseOver} onMouseLeave={onMouseLeave}>
       {data.isPremium ?

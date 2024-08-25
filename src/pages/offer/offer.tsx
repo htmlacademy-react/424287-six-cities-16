@@ -3,16 +3,16 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import Form from './components/form/form';
 // import { capitalizeFirstLetter } from '../../utils';
 import { CardProps, OfferCard, UserData } from '../../types/types';
-import ErrorPage from '../../components/error-page/error-page';
 import { useAppSelector } from '../../hooks';
 import { APIRoute, AppRoute, AuthorizationStatus } from '../../const';
 import { useEffect, useState } from 'react';
-import { api } from '../../store';
+import { api, store } from '../../store';
 import LoadingScreen from '../../components/loading-screen/loading-screen';
 import Map from '../../components/map/map';
 import { getCount } from '../../utils';
 import { humanizeDueDate,machineDueFormat, sortEventsBy } from '../../utils';
 import { FormDataProps } from './components/form/form';
+import { fetchOfferAction } from '../../store/api-actions';
 
 export interface Comment {
   id: string;
@@ -29,8 +29,6 @@ function Offer():JSX.Element {
   const [currentOffer, setCurrentOffer] = useState<OfferCard | undefined >();
   const [otherOffer, setOtherOffer] = useState<CardProps[] | undefined >();
   const [comments, setComments] = useState<Comment[] | undefined >();
-  const [offerStatus, setOfferStatus] = useState(true);
-
   const activeCity = useAppSelector((state)=> state.currentCity);
   const getComments = async () => {
     const {data:commentsData} = await api.get<Comment[]>(`${APIRoute.Comments}/${offerId}`);
@@ -41,16 +39,13 @@ function Offer():JSX.Element {
     await api.post<FormDataProps>(`${APIRoute.Comments}/${offerId}`, data);
     getComments();
   };
-  const getFavoriteOffers = async () => {
-    await api.get<CardProps[]>(`${APIRoute.Favorite}`);
-  };
+
   const onHandleFavoriteAdd =
     async () => {
-      getFavoriteOffers();
-      setOfferStatus(!offerStatus);
-      const status = Number(offerStatus);
+      const offerStatus = currentOffer?.isFavorite;
+      const status = Number(!offerStatus);
       await api.post<CardProps[]>(`${APIRoute.Favorite}/${offerId}/${status}`);
-      getFavoriteOffers();
+      store.dispatch(fetchOfferAction());
     };
 
 
@@ -59,25 +54,22 @@ function Offer():JSX.Element {
       (async () => {
         try {
           const {data:currentOfferData} = await api.get<OfferCard>(`${APIRoute.CurrentOffer}/${offerId}`);
-          const {data:otherOfferData} = await api.get<CardProps[]>(`${APIRoute.CurrentOffer}/${offerId}/nearby`);
+          const {data:otherOfferData} = await api.get<CardProps[]>(`${APIRoute.CurrentOffer}/${offerId}/${APIRoute.NearByOffers}`);
           setCurrentOffer(currentOfferData);
           setOtherOffer(otherOfferData);
           getComments();
-          getFavoriteOffers();
         } catch {
           navigate('/error');
         }
 
       })();
     }
-  }, [ navigate, offerId]);
+  }, [navigate, offerId]);
 
   if(!currentOffer) {
     return (<LoadingScreen />);
   }
-  if(currentOffer === undefined) {
-    return (<ErrorPage/>);
-  }
+
   return (
     <main className="page__main page__main--offer">
       <Helmet>
@@ -201,7 +193,7 @@ function Offer():JSX.Element {
           </div>
         </div>
         <section className="offer__map map">
-          <Map city={activeCity} points={otherOffer?.slice(0,3)} selectedPoint={currentOffer.id} />
+          {otherOffer && (<Map city={activeCity} points={otherOffer.slice(0,3)} selectedPoint={currentOffer.id} />)}
         </section>
       </section>
       {otherOffer && (

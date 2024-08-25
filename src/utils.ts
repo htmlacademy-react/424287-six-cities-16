@@ -1,6 +1,8 @@
 // export const capitalizeFirstLetter = (word: string): string => word.charAt[0].toUpperCase() + word.slice(1);
 
 import { CardProps } from './types/types';
+import { Comment } from './pages/offer/offer';
+
 type OfferCardByCity = {
     [key:string]:CardProps[];
 }
@@ -51,4 +53,4 @@ export const getSortedOffers = ({filteredOffers, sort}: {
 export const humanizeDueDate = (dueDate:string) => dueDate ? dayjs(dueDate).format(DateFormat.DAY_FORMAT) : '';
 export const machineDueFormat = (dueDate:string) => dueDate ? dayjs(dueDate).format(DateFormat.MACHINE_FORMAT) : '';
 
-export const sortEventsBy = (comments) => [comments].sort((a, b) => dayjs(a.dateFrom).diff(dayjs(b.dateFrom)));
+export const sortEventsBy = (comments: Comment[]) => [...comments].sort((a, b) => dayjs(b.date).diff(dayjs(a.date)));
