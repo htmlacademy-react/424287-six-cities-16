@@ -1,10 +1,6 @@
 import { Link } from 'react-router-dom';
 
 function Logo(): JSX.Element {
-  // const dispatch = useAppDispatch();
-  // const getFavoriteOffers = async () => {
-  //   await api.get<CardProps[]>(`${APIRoute.Favorite}`);
-  // };
   return (
     <Link className="header__logo-link"
       to='/'
