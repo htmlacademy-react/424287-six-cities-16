@@ -1,15 +1,19 @@
 import { createReducer} from '@reduxjs/toolkit';
-import { changeActiveCity, setOffersData,setOffersDataLoadingStatus } from './actions';
+import { changeActiveCity, setOffersData,setOffersDataLoadingStatus, requireAuthorization, setFavoriteOffersData } from './actions';
 import { CITIES_MOCKS } from '../mock/city';
-import { City } from '../types/types';
-import { CardProps } from '../components/card/card';
-import { OfferCards } from '../pages/offer/offer';
+import { City, UserData } from '../types/types';
+import { CardProps } from '../types/types';
+import { OfferCard } from '../types/types';
+import { AuthorizationStatus } from '../const';
 
 interface initialStateProps {
   currentCity: City;
   offersData: undefined | CardProps[];
-  offersFullData: undefined | OfferCards[];
+  offersFullData: undefined | OfferCard[];
   isOffersDataLoading: boolean;
+  authorizationStatus:string;
+  user: undefined | UserData;
+  favoritesOffersData: undefined | CardProps[];
 }
 
 const initialState: initialStateProps = {
@@ -17,6 +21,9 @@ const initialState: initialStateProps = {
   offersData: undefined,
   offersFullData: undefined,
   isOffersDataLoading: false,
+  authorizationStatus: AuthorizationStatus.Unknown,
+  user: undefined,
+  favoritesOffersData:undefined
 };
 
 export const reducer = createReducer(initialState,(builder) => {
@@ -25,10 +32,17 @@ export const reducer = createReducer(initialState,(builder) => {
       state.currentCity = action.payload.currentCity;
     })
     .addCase(setOffersData,(state,action)=>{
-      state.offersData = action.payload;
+      state.offersData = action.payload.offersData;
     })
     .addCase(setOffersDataLoadingStatus, (state, action) => {
       state.isOffersDataLoading = action.payload;
+    })
+    .addCase(requireAuthorization, (state, action) => {
+      state.authorizationStatus = action.payload.authStatus;
+      state.user = action.payload.userData;
+    })
+    .addCase(setFavoriteOffersData, (state, action) => {
+      state.favoritesOffersData = action.payload.favoritesOffersData;
     });
 
 });

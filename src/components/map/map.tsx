@@ -3,7 +3,7 @@ import {Icon, Marker, layerGroup} from 'leaflet';
 import useMap from '../../hooks/use-map';
 import {City} from '../../types/types';
 import 'leaflet/dist/leaflet.css';
-import { CardProps } from '../card/card';
+import { CardProps } from '../../types/types';
 
 enum Markers {
   Default = 'markup/img/pin.svg',
@@ -30,7 +30,6 @@ const currentCustomIcon = new Icon({
 
 function Map(props: MapProps): JSX.Element {
   const {city, points, selectedPoint} = props;
-
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
   useEffect(() => {
