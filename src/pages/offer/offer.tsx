@@ -30,14 +30,17 @@ function Offer():JSX.Element {
   const [otherOffer, setOtherOffer] = useState<CardProps[] | undefined >();
   const [comments, setComments] = useState<Comment[] | undefined >();
   const activeCity = useAppSelector((state)=> state.currentCity);
+
   const getComments = async () => {
     const {data:commentsData} = await api.get<Comment[]>(`${APIRoute.Comments}/${offerId}`);
     setComments(commentsData);
 
   };
   const onHandleSubmitForm = async (data: FormDataProps) => {
+
     await api.post<FormDataProps>(`${APIRoute.Comments}/${offerId}`, data);
     getComments();
+
   };
 
   const onHandleFavoriteAdd =

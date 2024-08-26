@@ -1,15 +1,24 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { APIRoute, AppRoute } from '../../const';
 import { CardProps } from '../../types/types';
 import { api, store } from '../../store';
 import { fetchOfferAction } from '../../store/api-actions';
 
 function Card({data,onMouseOver,onMouseLeave} :{data: CardProps; onMouseOver?:() => void;onMouseLeave?:() => void}):JSX.Element {
+
+  const navigate = useNavigate();
+
   const handleFavoriteButtonClick = async () => {
-    const offerStatus = data.isFavorite;
-    const status = Number(!offerStatus);
-    await api.post<CardProps[]>(`${APIRoute.Favorite}/${data.id}/${status}`);
-    store.dispatch(fetchOfferAction());
+    try {
+      const offerStatus = data.isFavorite;
+      const status = Number(!offerStatus);
+      await api.post<CardProps[]>(`${APIRoute.Favorite}/${data.id}/${status}`);
+      store.dispatch(fetchOfferAction());
+    } catch {
+      navigate(`${AppRoute.Login}`);
+
+    }
+
   };
 
   return (
