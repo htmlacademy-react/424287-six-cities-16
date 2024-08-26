@@ -16,12 +16,12 @@ const DEFAULT_FORM_DATE: FormDataProps = {
 function Form({onHandleSubmitForm}:{onHandleSubmitForm:(data:FormDataProps)=>void}):JSX.Element {
 
   const [isDisabledButton, setIsDisabledButton] = useState(true);
-  const [formData, setformData] = useState<FormDataProps>(DEFAULT_FORM_DATE);
+  const [formData, setFormData] = useState<FormDataProps>(DEFAULT_FORM_DATE);
 
   const handleFieldChange = ({name, value}: { name: keyof FormDataProps; value: string }): void => {
     const newValue = name === 'rating' ? parseInt(value, 10) : value;
     const newData = {...formData, [name]: newValue};
-    setformData(newData);
+    setFormData(newData);
 
     if (newData.rating !== undefined &&
       newData.comment.length < MAX_TEXTAREA_VALUES &&
@@ -53,6 +53,7 @@ function Form({onHandleSubmitForm}:{onHandleSubmitForm:(data:FormDataProps)=>voi
         <button className="reviews__submit form__submit button" type="submit" disabled={isDisabledButton} onClick={(e) => {
           e.preventDefault();
           onHandleSubmitForm(formData);
+          setFormData({...formData, comment: '', rating: undefined});
         }}
         >Submit
         </button>

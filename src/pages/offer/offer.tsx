@@ -97,7 +97,7 @@ function Offer():JSX.Element {
               </h1>
               {// eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
                 authorizationStatus === AuthorizationStatus.Auth && (
-                  <button className="offer__bookmark-button button" type="button" onClick={onHandleFavoriteAdd}>
+                  <button className={`offer__bookmark-button button ${currentOffer.isFavorite ? 'offer__bookmark-button--active' : ''}`} type="button" onClick={onHandleFavoriteAdd}>
                     <svg className="offer__bookmark-icon" width="31" height="33">
                       <use xlinkHref="#icon-bookmark"></use>
                     </svg>
@@ -108,7 +108,7 @@ function Offer():JSX.Element {
             </div>
             <div className="offer__rating rating">
               <div className="offer__stars rating__stars">
-                <span style={{width: `${currentOffer.rating / 5 * 100}%`}}/>
+                <span style={{width: `${Math.round(currentOffer.rating) / 5 * 100}%`}}/>
                 <span className="visually-hidden">Rating</span>
               </div>
               <span className="offer__rating-value rating__value">{currentOffer.rating}</span>
