@@ -4,11 +4,11 @@ import { CardProps } from '../../types/types';
 import { api, store } from '../../store';
 import { fetchOfferAction } from '../../store/api-actions';
 
-function Card({data,onMouseOver,onMouseLeave} :{data: CardProps; onMouseOver?:() => void;onMouseLeave?:() => void}):JSX.Element {
+function Card({data,onMouseOver,onMouseLeave, className} :{data: CardProps; onMouseOver?:() => void;onMouseLeave?:() => void; className?:string}):JSX.Element {
 
   const navigate = useNavigate();
 
-  const handleFavoriteButtonClick = async () => {
+  const addToFavorite = async () => {
     try {
       const offerStatus = data.isFavorite;
       const status = Number(!offerStatus);
@@ -21,13 +21,17 @@ function Card({data,onMouseOver,onMouseLeave} :{data: CardProps; onMouseOver?:()
 
   };
 
+  const handleFavoriteButtonClick = () => {
+    addToFavorite();
+  };
+
   return (
-    <article className="cities__card place-card" onMouseEnter={onMouseOver} onMouseLeave={onMouseLeave}>
+    <article className={`${className}__card place-card`} onMouseEnter={onMouseOver} onMouseLeave={onMouseLeave}>
       {data.isPremium ?
         <div className="place-card__mark">
           <span>Premium</span>
         </div> : null}
-      <div className="cities__image-wrapper place-card__image-wrapper">
+      <div className={`${className}__image-wrapper place-card__image-wrapper`}>
         <Link to={AppRoute.Root}>
           <img className="place-card__image" src={data.previewImage} width={260} height={200} alt="Place image"/>
         </Link>

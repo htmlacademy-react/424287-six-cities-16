@@ -13,7 +13,7 @@ const DEFAULT_FORM_DATA: FormDataProps = {
   comment: '',
 };
 
-function Form({onHandleSubmitForm}:{onHandleSubmitForm:(data:FormDataProps)=>void}):JSX.Element {
+function Form({onHandleSubmitForm}:{onHandleSubmitForm:(data:FormDataProps)=>Promise<void>}):JSX.Element {
 
   const [isDisabledButton, setIsDisabledButton] = useState(true);
   const [formData, setFormData] = useState<FormDataProps>(DEFAULT_FORM_DATA);
@@ -35,7 +35,7 @@ function Form({onHandleSubmitForm}:{onHandleSubmitForm:(data:FormDataProps)=>voi
       <div className="reviews__rating-form form__rating">
         {STAR_ARRAYS.map((item) => (
           <Fragment key={item}>
-            <input className="form__rating-input visually-hidden" name="rating" value={item} id={`${item}-stars`} type="radio" onChange={(evt) => handleFieldChange({name: 'rating', value: evt.target.value})}/>
+            <input className="form__rating-input visually-hidden" name="rating" value={item} id={`${item}-stars`} type="radio" checked={formData.rating ? item === formData.rating : false} onChange={(evt) => handleFieldChange({name: 'rating', value: evt.target.value})}/>
             <label htmlFor={`${item}-stars`} className="reviews__rating-label form__rating-label" title="perfect">
               <svg className="form__star-image" width="37" height="33">
                 <use xlinkHref="#icon-star"></use>
@@ -50,8 +50,8 @@ function Form({onHandleSubmitForm}:{onHandleSubmitForm:(data:FormDataProps)=>voi
         <p className="reviews__help">
             To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
         </p>
-        <button className="reviews__submit form__submit button" type="submit" disabled={isDisabledButton} onClick={(e) => {
-          e.preventDefault();
+        <button className="reviews__submit form__submit button" type="submit" disabled={isDisabledButton} onClick={(evt) => {
+          evt.preventDefault();
           onHandleSubmitForm(formData);
           setFormData(DEFAULT_FORM_DATA);
 

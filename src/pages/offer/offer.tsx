@@ -1,11 +1,11 @@
 import { Helmet } from 'react-helmet-async';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Form from './components/form/form';
 // import { capitalizeFirstLetter } from '../../utils';
 import { CardProps, OfferCard, UserData } from '../../types/types';
 import { useAppSelector } from '../../hooks';
-import { APIRoute, AppRoute, AuthorizationStatus } from '../../const';
-import { useEffect, useState } from 'react';
+import { APIRoute, AuthorizationStatus } from '../../const';
+import { useCallback, useEffect, useState } from 'react';
 import { api, store } from '../../store';
 import LoadingScreen from '../../components/loading-screen/loading-screen';
 import Map from '../../components/map/map';
@@ -13,6 +13,7 @@ import { getCount } from '../../utils';
 import { humanizeDueDate,machineDueFormat, sortEventsBy } from '../../utils';
 import { FormDataProps } from './components/form/form';
 import { fetchOfferAction } from '../../store/api-actions';
+import Card from '../../components/card/card';
 
 export interface Comment {
   id: string;
@@ -31,11 +32,12 @@ function Offer():JSX.Element {
   const [comments, setComments] = useState<Comment[] | undefined >();
   const activeCity = useAppSelector((state)=> state.currentCity);
 
-  const getComments = async () => {
+  const getComments = useCallback(async () => {
     const {data:commentsData} = await api.get<Comment[]>(`${APIRoute.Comments}/${offerId}`);
     setComments(commentsData);
 
-  };
+  },[offerId]);
+
   const onHandleSubmitForm = async (data: FormDataProps) => {
 
     await api.post<FormDataProps>(`${APIRoute.Comments}/${offerId}`, data);
@@ -43,13 +45,18 @@ function Offer():JSX.Element {
 
   };
 
-  const onHandleFavoriteAdd =
-    async () => {
-      const offerStatus = currentOffer?.isFavorite;
-      const status = Number(!offerStatus);
-      await api.post<CardProps[]>(`${APIRoute.Favorite}/${offerId}/${status}`);
-      store.dispatch(fetchOfferAction());
-    };
+  const addToFavorite = async () => {
+    const offerStatus = !currentOffer?.isFavorite;
+    const status = Number(offerStatus);
+    await api.post<CardProps[]>(`${APIRoute.Favorite}/${offerId}/${status}`);
+    store.dispatch(fetchOfferAction());
+
+  };
+
+
+  const onHandleFavoriteAdd = () => {
+    addToFavorite();
+  };
 
 
   useEffect(() => {
@@ -67,7 +74,7 @@ function Offer():JSX.Element {
 
       })();
     }
-  }, [navigate, offerId]);
+  }, [getComments, navigate, offerId]);
 
   if(!currentOffer) {
     return (<LoadingScreen />);
@@ -205,37 +212,38 @@ function Offer():JSX.Element {
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
               {otherOffer.slice(0,3).map((item) => (
-                <article className="near-places__card place-card" key={item.id}>
-                  <div className="near-places__image-wrapper place-card__image-wrapper">
-                    <Link to={AppRoute.OfferDetail}>
-                      <img className="place-card__image" src={item.previewImage} width="260" height="200" alt="Place image"/>
-                    </Link>
-                  </div>
-                  <div className="place-card__info">
-                    <div className="place-card__price-wrapper">
-                      <div className="place-card__price">
-                        <b className="place-card__price-value">&euro;{item.price}</b>
-                        <span className="place-card__price-text">&#47;&nbsp;night</span>
-                      </div>
-                      <button className="place-card__bookmark-button place-card__bookmark-button--active button" type="button">
-                        <svg className="place-card__bookmark-icon" width="18" height="19">
-                          <use xlinkHref="#icon-bookmark"></use>
-                        </svg>
-                        <span className="visually-hidden">In bookmarks</span>
-                      </button>
-                    </div>
-                    <div className="place-card__rating rating">
-                      <div className="place-card__stars rating__stars">
-                        <span style={{width: `${item.rating / 5 * 100}%`}}/>
-                        <span className="visually-hidden">Rating</span>
-                      </div>
-                    </div>
-                    <h2 className="place-card__name">
-                      <Link to="#">{item.title}</Link>
-                    </h2>
-                    <p className="place-card__type">{item.type}</p>
-                  </div>
-                </article>
+                <Card key={item.id} data={item} className='near-places'/>
+                // <article className="near-places__card place-card" key={item.id}>
+                //   <div className="near-places__image-wrapper place-card__image-wrapper">
+                //     <Link to={AppRoute.OfferDetail}>
+                //       <img className="place-card__image" src={item.previewImage} width="260" height="200" alt="Place image"/>
+                //     </Link>
+                //   </div>
+                //   <div className="place-card__info">
+                //     <div className="place-card__price-wrapper">
+                //       <div className="place-card__price">
+                //         <b className="place-card__price-value">&euro;{item.price}</b>
+                //         <span className="place-card__price-text">&#47;&nbsp;night</span>
+                //       </div>
+                //       <button className={`place-card__bookmark-button ${item.isFavorite ? 'place-card__bookmark-button--active' : ''} button`} type="button">
+                //         <svg className="place-card__bookmark-icon" width="18" height="19">
+                //           <use xlinkHref="#icon-bookmark"></use>
+                //         </svg>
+                //         <span className="visually-hidden">In bookmarks</span>
+                //       </button>
+                //     </div>
+                //     <div className="place-card__rating rating">
+                //       <div className="place-card__stars rating__stars">
+                //         <span style={{width: `${item.rating / 5 * 100}%`}}/>
+                //         <span className="visually-hidden">Rating</span>
+                //       </div>
+                //     </div>
+                //     <h2 className="place-card__name">
+                //       <Link to="#">{item.title}</Link>
+                //     </h2>
+                //     <p className="place-card__type">{item.type}</p>
+                //   </div>
+                // </article>
               ))}
 
 

@@ -7,6 +7,7 @@ import { useAppSelector } from '../../hooks';
 function Favourites(): JSX.Element {
   const offerData = useAppSelector((state) => state.offersData);
   const offerCardsByCity = offerData ? getOfferCardsByCity(offerData) : null;
+
   return (
     <main className="page__main page__main--favorites">
       <Helmet>
