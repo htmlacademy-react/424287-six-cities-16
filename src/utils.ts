@@ -12,7 +12,7 @@ import dayjs from 'dayjs';
 
 
 const DateFormat = {
-  DAY_FORMAT: 'MMMM D',
+  DAY_FORMAT: 'MMMM YYYY',
   MACHINE_FORMAT: 'YYYY-MM-DD',
 } ;
 
