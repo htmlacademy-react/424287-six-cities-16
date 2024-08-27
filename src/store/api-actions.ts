@@ -2,17 +2,15 @@ import {AxiosInstance} from 'axios';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import { AppDispatch, State, UserData, AuthData } from '../types/types';
 import { APIRoute, AppRoute, AuthorizationStatus } from '../const';
-import { redirectToRoute, requireAuthorization, setFavoriteOffersData, setOffersData, setOffersDataLoadingStatus } from './actions';
+import { redirectToRoute, requireAuthorization, setFavoriteOffersData, setOffersData } from './actions';
 import { CardProps } from '../types/types';
 import { dropToken, saveToken } from '../services/token';
 
 export const fetchOfferAction = createAsyncThunk<void, undefined, {dispatch: AppDispatch; state: State; extra: AxiosInstance}>(
   'fetchOffers',
   async (_arg, {dispatch, extra: api}) => {
-    dispatch(setOffersDataLoadingStatus(true));
     const { data } = await api.get<CardProps[]>(APIRoute.Offers);
     dispatch(setOffersData({ offersData: data }));
-    dispatch(setOffersDataLoadingStatus(false));
 
   },
 );

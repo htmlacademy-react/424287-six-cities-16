@@ -75,6 +75,7 @@ avatarUrl: string;
 isPro: boolean;
 email: string;
 token: string;
+password: string;
 }
 
 export type Sorting = typeof SORTING[number];

@@ -16,7 +16,6 @@ import HistoryRouter from '../history-route/history-route';
 
 function App(): JSX.Element {
   const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
-
   if (isOffersDataLoading) {
     return (
       < LoadingScreen />
@@ -32,7 +31,7 @@ function App(): JSX.Element {
             />
             <Route
               path={AppRoute.Favorites}
-              element={ <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}><Favourites /></PrivateRoute>}
+              element={ <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}><Favourites/></PrivateRoute>}
             />
             <Route
               path={AppRoute.Login}

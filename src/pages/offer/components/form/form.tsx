@@ -13,10 +13,11 @@ const DEFAULT_FORM_DATA: FormDataProps = {
   comment: '',
 };
 
-function Form({onHandleSubmitForm}:{onHandleSubmitForm:(data:FormDataProps)=>Promise<void>}):JSX.Element {
+function Form({onHandleSubmitForm, isDisableForm}:{onHandleSubmitForm:(data:FormDataProps)=>Promise<void>; isDisableForm: boolean}):JSX.Element {
 
   const [isDisabledButton, setIsDisabledButton] = useState(true);
   const [formData, setFormData] = useState<FormDataProps>(DEFAULT_FORM_DATA);
+  // const [isDisableForm, setIsDisabledForm] = useState(false);
 
   const handleFieldChange = ({name, value}: { name: keyof FormDataProps; value: string }): void => {
     const newValue = name === 'rating' ? parseInt(value, 10) : value;
@@ -35,7 +36,7 @@ function Form({onHandleSubmitForm}:{onHandleSubmitForm:(data:FormDataProps)=>Pro
       <div className="reviews__rating-form form__rating">
         {STAR_ARRAYS.map((item) => (
           <Fragment key={item}>
-            <input className="form__rating-input visually-hidden" name="rating" value={item} id={`${item}-stars`} type="radio" checked={formData.rating ? item === formData.rating : false} onChange={(evt) => handleFieldChange({name: 'rating', value: evt.target.value})}/>
+            <input className="form__rating-input visually-hidden" name="rating" value={item} id={`${item}-stars`} type="radio" checked={formData.rating ? item === formData.rating : false} onChange={(evt) => handleFieldChange({name: 'rating', value: evt.target.value})} disabled = {isDisableForm}/>
             <label htmlFor={`${item}-stars`} className="reviews__rating-label form__rating-label" title="perfect">
               <svg className="form__star-image" width="37" height="33">
                 <use xlinkHref="#icon-star"></use>
@@ -44,7 +45,7 @@ function Form({onHandleSubmitForm}:{onHandleSubmitForm:(data:FormDataProps)=>Pro
           </Fragment>))}
       </div>
       <textarea className="reviews__textarea form__textarea" id="review" name="review" placeholder="Tell how was your stay, what you like and what can be improved" value={formData.comment}
-        onChange={(evt) => handleFieldChange({name: 'comment', value: evt.target.value})}
+        onChange={(evt) => handleFieldChange({name: 'comment', value: evt.target.value})} disabled = {isDisableForm}
       />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
@@ -56,6 +57,7 @@ function Form({onHandleSubmitForm}:{onHandleSubmitForm:(data:FormDataProps)=>Pro
           setFormData(DEFAULT_FORM_DATA);
 
           setIsDisabledButton(true);
+
         }}
         >Submit
         </button>

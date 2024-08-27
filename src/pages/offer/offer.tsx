@@ -1,7 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
 import Form from './components/form/form';
-// import { capitalizeFirstLetter } from '../../utils';
 import { CardProps, OfferCard, UserData } from '../../types/types';
 import { useAppSelector } from '../../hooks';
 import { APIRoute, AuthorizationStatus } from '../../const';
@@ -30,6 +29,8 @@ function Offer():JSX.Element {
   const [currentOffer, setCurrentOffer] = useState<OfferCard | undefined >();
   const [otherOffer, setOtherOffer] = useState<CardProps[] | undefined >();
   const [comments, setComments] = useState<Comment[] | undefined >();
+  const [isDisableForm, setIsDisabledForm] = useState(false);
+
   const activeCity = useAppSelector((state)=> state.currentCity);
 
   const getComments = useCallback(async () => {
@@ -39,9 +40,18 @@ function Offer():JSX.Element {
   },[offerId]);
 
   const onHandleSubmitForm = async (data: FormDataProps) => {
+    try {
+      setIsDisabledForm(true);
+      await api.post<FormDataProps>(`${APIRoute.Comments}/${offerId}`, data);
+      getComments();
+      setIsDisabledForm(false);
 
-    await api.post<FormDataProps>(`${APIRoute.Comments}/${offerId}`, data);
-    getComments();
+    } catch {
+      // eslint-disable-next-line no-alert
+      alert('К сожалению, возникла ошибка. Попробуйте еще раз');
+      setIsDisabledForm(false);
+
+    }
 
   };
 
@@ -49,6 +59,11 @@ function Offer():JSX.Element {
     const offerStatus = !currentOffer?.isFavorite;
     const status = Number(offerStatus);
     await api.post<CardProps[]>(`${APIRoute.Favorite}/${offerId}/${status}`);
+    setCurrentOffer((prevState) => {
+      if(prevState) {
+        return {...prevState, isFavorite: offerStatus};
+      }
+    });
     store.dispatch(fetchOfferAction());
 
   };
@@ -70,6 +85,7 @@ function Offer():JSX.Element {
           getComments();
         } catch {
           navigate('/error');
+
         }
 
       })();
@@ -197,7 +213,7 @@ function Offer():JSX.Element {
 
                 </ul>
                 {// eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
-                  authorizationStatus === AuthorizationStatus.Auth && <Form onHandleSubmitForm={onHandleSubmitForm}/>
+                  authorizationStatus === AuthorizationStatus.Auth && <Form onHandleSubmitForm={onHandleSubmitForm} isDisableForm={isDisableForm}/>
                 }
               </section>)}
           </div>
@@ -213,37 +229,6 @@ function Offer():JSX.Element {
             <div className="near-places__list places__list">
               {otherOffer.slice(0,3).map((item) => (
                 <Card key={item.id} data={item} className='near-places'/>
-                // <article className="near-places__card place-card" key={item.id}>
-                //   <div className="near-places__image-wrapper place-card__image-wrapper">
-                //     <Link to={AppRoute.OfferDetail}>
-                //       <img className="place-card__image" src={item.previewImage} width="260" height="200" alt="Place image"/>
-                //     </Link>
-                //   </div>
-                //   <div className="place-card__info">
-                //     <div className="place-card__price-wrapper">
-                //       <div className="place-card__price">
-                //         <b className="place-card__price-value">&euro;{item.price}</b>
-                //         <span className="place-card__price-text">&#47;&nbsp;night</span>
-                //       </div>
-                //       <button className={`place-card__bookmark-button ${item.isFavorite ? 'place-card__bookmark-button--active' : ''} button`} type="button">
-                //         <svg className="place-card__bookmark-icon" width="18" height="19">
-                //           <use xlinkHref="#icon-bookmark"></use>
-                //         </svg>
-                //         <span className="visually-hidden">In bookmarks</span>
-                //       </button>
-                //     </div>
-                //     <div className="place-card__rating rating">
-                //       <div className="place-card__stars rating__stars">
-                //         <span style={{width: `${item.rating / 5 * 100}%`}}/>
-                //         <span className="visually-hidden">Rating</span>
-                //       </div>
-                //     </div>
-                //     <h2 className="place-card__name">
-                //       <Link to="#">{item.title}</Link>
-                //     </h2>
-                //     <p className="place-card__type">{item.type}</p>
-                //   </div>
-                // </article>
               ))}
 
 
