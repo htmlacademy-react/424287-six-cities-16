@@ -50,9 +50,7 @@ function Offer():JSX.Element {
       // eslint-disable-next-line no-alert
       alert('К сожалению, возникла ошибка. Попробуйте еще раз');
       setIsDisabledForm(false);
-
     }
-
   };
 
   const addToFavorite = async () => {

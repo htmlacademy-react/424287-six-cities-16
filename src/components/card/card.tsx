@@ -10,8 +10,8 @@ function Card({data,onMouseOver,onMouseLeave, className} :{data: CardProps; onMo
 
   const addToFavorite = async () => {
     try {
-      const offerStatus = data.isFavorite;
-      const status = Number(!offerStatus);
+      const offerStatus = !data.isFavorite;
+      const status = Number(offerStatus);
       await api.post<CardProps[]>(`${APIRoute.Favorite}/${data.id}/${status}`);
       store.dispatch(fetchOfferAction());
     } catch {
