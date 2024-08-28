@@ -41,6 +41,7 @@ function Layout():JSX.Element {
                       </li>
                       <li className="header__nav-item">
                         <Link className="header__nav-link" onClick={() => {
+
                           dispatch(logoutAction());
                         }}
                         to='/'

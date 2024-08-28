@@ -15,7 +15,7 @@ function Card({data,onMouseOver,onMouseLeave, className} :{data: CardProps; onMo
       await api.post<CardProps[]>(`${APIRoute.Favorite}/${data.id}/${status}`);
       store.dispatch(fetchOfferAction());
     } catch {
-      navigate(`${AppRoute.Login}`);
+      navigate(`/${AppRoute.Login}`);
 
     }
 
@@ -56,7 +56,7 @@ function Card({data,onMouseOver,onMouseLeave, className} :{data: CardProps; onMo
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`${AppRoute.Offer}/${data.id}`}>{data.title}</Link>
+          <Link to={`/${AppRoute.Offer}/${data.id}`}>{data.title}</Link>
         </h2>
         <p className="place-card__type">{data.type}</p>
       </div>
