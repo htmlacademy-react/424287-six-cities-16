@@ -12,7 +12,7 @@ enum Markers {
 
 type MapProps = {
   city: City;
-  points: CardProps[];
+  points: Omit<CardProps, 'previewImage'>[];
   selectedPoint: string | undefined;
 };
 

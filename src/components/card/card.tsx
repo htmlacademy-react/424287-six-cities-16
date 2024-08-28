@@ -1,24 +1,37 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { APIRoute, AppRoute } from '../../const';
 import { CardProps } from '../../types/types';
 import { api, store } from '../../store';
 import { fetchOfferAction } from '../../store/api-actions';
 
-function Card({data,onMouseOver,onMouseLeave} :{data: CardProps; onMouseOver?:() => void;onMouseLeave?:() => void}):JSX.Element {
-  const handleFavoriteButtonClick = async () => {
-    const offerStatus = data.isFavorite;
-    const status = Number(!offerStatus);
-    await api.post<CardProps[]>(`${APIRoute.Favorite}/${data.id}/${status}`);
-    store.dispatch(fetchOfferAction());
+function Card({data,onMouseOver,onMouseLeave, className} :{data: CardProps; onMouseOver?:() => void;onMouseLeave?:() => void; className?:string}):JSX.Element {
+
+  const navigate = useNavigate();
+
+  const addToFavorite = async () => {
+    try {
+      const offerStatus = !data.isFavorite;
+      const status = Number(offerStatus);
+      await api.post<CardProps[]>(`${APIRoute.Favorite}/${data.id}/${status}`);
+      store.dispatch(fetchOfferAction());
+    } catch {
+      navigate(`/${AppRoute.Login}`);
+
+    }
+
+  };
+
+  const handleFavoriteButtonClick = () => {
+    addToFavorite();
   };
 
   return (
-    <article className="cities__card place-card" onMouseEnter={onMouseOver} onMouseLeave={onMouseLeave}>
+    <article className={`${className}__card place-card`} onMouseEnter={onMouseOver} onMouseLeave={onMouseLeave}>
       {data.isPremium ?
         <div className="place-card__mark">
           <span>Premium</span>
         </div> : null}
-      <div className="cities__image-wrapper place-card__image-wrapper">
+      <div className={`${className}__image-wrapper place-card__image-wrapper`}>
         <Link to={AppRoute.Root}>
           <img className="place-card__image" src={data.previewImage} width={260} height={200} alt="Place image"/>
         </Link>
@@ -38,12 +51,12 @@ function Card({data,onMouseOver,onMouseLeave} :{data: CardProps; onMouseOver?:()
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: `${data.rating / 5 * 100}%`}}></span>
+            <span style={{width: `${Math.round(data.rating) / 5 * 100}%`}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`${AppRoute.Offer}/${data.id}`}>{data.title}</Link>
+          <Link to={`/${AppRoute.Offer}/${data.id}`}>{data.title}</Link>
         </h2>
         <p className="place-card__type">{data.type}</p>
       </div>

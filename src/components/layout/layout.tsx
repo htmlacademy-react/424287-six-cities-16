@@ -7,7 +7,7 @@ import { logoutAction } from '../../store/api-actions';
 function Layout():JSX.Element {
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const userData = useAppSelector((state) => state.user);
-const favoritesData = useAppSelector((state) => state.offersData);
+  const favoritesData = useAppSelector((state) => state.offersData);
   const dispatch = useAppDispatch();
 
   return (
@@ -41,6 +41,7 @@ const favoritesData = useAppSelector((state) => state.offersData);
                       </li>
                       <li className="header__nav-item">
                         <Link className="header__nav-link" onClick={() => {
+
                           dispatch(logoutAction());
                         }}
                         to='/'

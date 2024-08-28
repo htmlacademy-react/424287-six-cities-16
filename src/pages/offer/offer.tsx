@@ -1,11 +1,10 @@
 import { Helmet } from 'react-helmet-async';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Form from './components/form/form';
-// import { capitalizeFirstLetter } from '../../utils';
 import { CardProps, OfferCard, UserData } from '../../types/types';
 import { useAppSelector } from '../../hooks';
-import { APIRoute, AppRoute, AuthorizationStatus } from '../../const';
-import { useEffect, useState } from 'react';
+import { APIRoute, AuthorizationStatus } from '../../const';
+import { useCallback, useEffect, useState } from 'react';
 import { api, store } from '../../store';
 import LoadingScreen from '../../components/loading-screen/loading-screen';
 import Map from '../../components/map/map';
@@ -13,6 +12,7 @@ import { getCount } from '../../utils';
 import { humanizeDueDate,machineDueFormat, sortEventsBy } from '../../utils';
 import { FormDataProps } from './components/form/form';
 import { fetchOfferAction } from '../../store/api-actions';
+import Card from '../../components/card/card';
 
 export interface Comment {
   id: string;
@@ -29,24 +29,57 @@ function Offer():JSX.Element {
   const [currentOffer, setCurrentOffer] = useState<OfferCard | undefined >();
   const [otherOffer, setOtherOffer] = useState<CardProps[] | undefined >();
   const [comments, setComments] = useState<Comment[] | undefined >();
+  const [isDisableForm, setIsDisabledForm] = useState(false);
+
   const activeCity = useAppSelector((state)=> state.currentCity);
-  const getComments = async () => {
+
+  const getComments = useCallback(async () => {
     const {data:commentsData} = await api.get<Comment[]>(`${APIRoute.Comments}/${offerId}`);
     setComments(commentsData);
 
-  };
+  },[offerId]);
+
   const onHandleSubmitForm = async (data: FormDataProps) => {
-    await api.post<FormDataProps>(`${APIRoute.Comments}/${offerId}`, data);
-    getComments();
+    try {
+      setIsDisabledForm(true);
+      await api.post<FormDataProps>(`${APIRoute.Comments}/${offerId}`, data);
+      getComments();
+      setIsDisabledForm(false);
+
+    } catch {
+      // eslint-disable-next-line no-alert
+      alert('К сожалению, возникла ошибка. Попробуйте еще раз');
+      setIsDisabledForm(false);
+    }
   };
 
-  const onHandleFavoriteAdd =
-    async () => {
-      const offerStatus = currentOffer?.isFavorite;
-      const status = Number(!offerStatus);
-      await api.post<CardProps[]>(`${APIRoute.Favorite}/${offerId}/${status}`);
-      store.dispatch(fetchOfferAction());
-    };
+  const addToFavorite = async () => {
+    const offerStatus = !currentOffer?.isFavorite;
+    // const otherOfferStatus = !otherOffer.;
+    const status = Number(offerStatus);
+    await api.post<CardProps[]>(`${APIRoute.Favorite}/${offerId}/${status}`);
+    setCurrentOffer((prevState) => {
+      if(prevState) {
+        return {...prevState, isFavorite: offerStatus};
+      }
+    });
+
+    // setOtherOffer((prevState) => {
+    //   if(prevState) {
+    //     return {...prevState, isFavorite: offerStatus};
+    //   }
+    // });
+
+    store.dispatch(fetchOfferAction());
+    const {data:otherOfferData} = await api.get<CardProps[]>(`${APIRoute.CurrentOffer}/${offerId}/${APIRoute.NearByOffers}`);
+    setOtherOffer(otherOfferData);
+
+  };
+
+
+  const onHandleFavoriteAdd = () => {
+    addToFavorite();
+  };
 
 
   useEffect(() => {
@@ -60,11 +93,12 @@ function Offer():JSX.Element {
           getComments();
         } catch {
           navigate('/error');
+
         }
 
       })();
     }
-  }, [navigate, offerId]);
+  }, [getComments, navigate, offerId]);
 
   if(!currentOffer) {
     return (<LoadingScreen />);
@@ -97,7 +131,7 @@ function Offer():JSX.Element {
               </h1>
               {// eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
                 authorizationStatus === AuthorizationStatus.Auth && (
-                  <button className="offer__bookmark-button button" type="button" onClick={onHandleFavoriteAdd}>
+                  <button className={`offer__bookmark-button button ${currentOffer.isFavorite ? 'offer__bookmark-button--active' : ''}`} type="button" onClick={onHandleFavoriteAdd}>
                     <svg className="offer__bookmark-icon" width="31" height="33">
                       <use xlinkHref="#icon-bookmark"></use>
                     </svg>
@@ -108,7 +142,7 @@ function Offer():JSX.Element {
             </div>
             <div className="offer__rating rating">
               <div className="offer__stars rating__stars">
-                <span style={{width: `${currentOffer.rating / 5 * 100}%`}}/>
+                <span style={{width: `${Math.round(currentOffer.rating) / 5 * 100}%`}}/>
                 <span className="visually-hidden">Rating</span>
               </div>
               <span className="offer__rating-value rating__value">{currentOffer.rating}</span>
@@ -187,7 +221,7 @@ function Offer():JSX.Element {
 
                 </ul>
                 {// eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
-                  authorizationStatus === AuthorizationStatus.Auth && <Form onHandleSubmitForm={onHandleSubmitForm}/>
+                  authorizationStatus === AuthorizationStatus.Auth && <Form onHandleSubmitForm={onHandleSubmitForm} isDisableForm={isDisableForm}/>
                 }
               </section>)}
           </div>
@@ -202,37 +236,7 @@ function Offer():JSX.Element {
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
               {otherOffer.slice(0,3).map((item) => (
-                <article className="near-places__card place-card" key={item.id}>
-                  <div className="near-places__image-wrapper place-card__image-wrapper">
-                    <Link to={AppRoute.OfferDetail}>
-                      <img className="place-card__image" src={item.previewImage} width="260" height="200" alt="Place image"/>
-                    </Link>
-                  </div>
-                  <div className="place-card__info">
-                    <div className="place-card__price-wrapper">
-                      <div className="place-card__price">
-                        <b className="place-card__price-value">&euro;{item.price}</b>
-                        <span className="place-card__price-text">&#47;&nbsp;night</span>
-                      </div>
-                      <button className="place-card__bookmark-button place-card__bookmark-button--active button" type="button">
-                        <svg className="place-card__bookmark-icon" width="18" height="19">
-                          <use xlinkHref="#icon-bookmark"></use>
-                        </svg>
-                        <span className="visually-hidden">In bookmarks</span>
-                      </button>
-                    </div>
-                    <div className="place-card__rating rating">
-                      <div className="place-card__stars rating__stars">
-                        <span style={{width: `${item.rating / 5 * 100}%`}}/>
-                        <span className="visually-hidden">Rating</span>
-                      </div>
-                    </div>
-                    <h2 className="place-card__name">
-                      <Link to="#">{item.title}</Link>
-                    </h2>
-                    <p className="place-card__type">{item.type}</p>
-                  </div>
-                </article>
+                <Card key={item.id} data={item} className='near-places'/>
               ))}
 
 

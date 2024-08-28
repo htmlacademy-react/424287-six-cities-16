@@ -11,7 +11,7 @@ function CardList({dataOffers,onHover,onHandlerMouseLeave}:MainScreenProps):JSX.
 
   return (
     <div className="cities__places-list places__list tabs__content">
-      {dataOffers.map((item) => <Card onMouseOver={() =>onHover(item.id)} onMouseLeave={() =>onHandlerMouseLeave()} key={item.id} data={item}/>)}
+      {dataOffers.map((item) => <Card onMouseOver={() =>onHover(item.id)} onMouseLeave={() =>onHandlerMouseLeave()} key={item.id} data={item} className='cities'/>)}
     </div>);
 }
 
