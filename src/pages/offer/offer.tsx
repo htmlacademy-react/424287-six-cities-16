@@ -55,7 +55,6 @@ function Offer():JSX.Element {
 
   const addToFavorite = async () => {
     const offerStatus = !currentOffer?.isFavorite;
-    // const otherOfferStatus = !otherOffer.;
     const status = Number(offerStatus);
     await api.post<CardProps[]>(`${APIRoute.Favorite}/${offerId}/${status}`);
     setCurrentOffer((prevState) => {
@@ -63,12 +62,6 @@ function Offer():JSX.Element {
         return {...prevState, isFavorite: offerStatus};
       }
     });
-
-    // setOtherOffer((prevState) => {
-    //   if(prevState) {
-    //     return {...prevState, isFavorite: offerStatus};
-    //   }
-    // });
 
     store.dispatch(fetchOfferAction());
     const {data:otherOfferData} = await api.get<CardProps[]>(`${APIRoute.CurrentOffer}/${offerId}/${APIRoute.NearByOffers}`);

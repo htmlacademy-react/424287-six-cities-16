@@ -17,7 +17,6 @@ function Form({onHandleSubmitForm, isDisableForm}:{onHandleSubmitForm:(data:Form
 
   const [isDisabledButton, setIsDisabledButton] = useState(true);
   const [formData, setFormData] = useState<FormDataProps>(DEFAULT_FORM_DATA);
-  // const [isDisableForm, setIsDisabledForm] = useState(false);
 
   const handleFieldChange = ({name, value}: { name: keyof FormDataProps; value: string }): void => {
     const newValue = name === 'rating' ? parseInt(value, 10) : value;
