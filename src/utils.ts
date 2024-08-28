@@ -1,4 +1,3 @@
-// export const capitalizeFirstLetter = (word: string): string => word.charAt[0].toUpperCase() + word.slice(1);
 
 import { CardProps } from './types/types';
 import { Comment } from './pages/offer/offer';
