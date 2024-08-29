@@ -5,7 +5,7 @@ import {City} from '../../types/types';
 import 'leaflet/dist/leaflet.css';
 import { CardProps } from '../../types/types';
 
-enum Markers {
+enum MarkerIcon {
   Default = 'markup/img/pin.svg',
   Current = 'markup/img/pin-active.svg',
 }
@@ -17,13 +17,13 @@ type MapProps = {
 };
 
 const defaultCustomIcon = new Icon({
-  iconUrl: Markers.Default,
+  iconUrl: MarkerIcon.Default,
   iconSize: [27, 39],
   iconAnchor: [13, 39]
 });
 
 const currentCustomIcon = new Icon({
-  iconUrl: Markers.Current,
+  iconUrl: MarkerIcon.Current,
   iconSize: [27, 39],
   iconAnchor: [13, 39]
 });

@@ -3,6 +3,7 @@ import { APIRoute, AppRoute } from '../../const';
 import { CardProps } from '../../types/types';
 import { api, store } from '../../store';
 import { fetchOfferAction } from '../../store/api-actions';
+import { capitalizeFirstLetter } from '../../utils';
 
 function Card({data,onMouseOver,onMouseLeave, className} :{data: CardProps; onMouseOver?:() => void;onMouseLeave?:() => void; className?:string}):JSX.Element {
 
@@ -58,7 +59,7 @@ function Card({data,onMouseOver,onMouseLeave, className} :{data: CardProps; onMo
         <h2 className="place-card__name">
           <Link to={`/${AppRoute.Offer}/${data.id}`}>{data.title}</Link>
         </h2>
-        <p className="place-card__type">{data.type}</p>
+        <p className="place-card__type">{capitalizeFirstLetter(data.type)}</p>
       </div>
     </article>
   );

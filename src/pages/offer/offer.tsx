@@ -3,12 +3,12 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Form from './components/form/form';
 import { CardProps, OfferCard, UserData } from '../../types/types';
 import { useAppSelector } from '../../hooks';
-import { APIRoute, AuthorizationStatus } from '../../const';
+import { APIRoute, AppRoute, AuthorizationStatus } from '../../const';
 import { useCallback, useEffect, useState } from 'react';
 import { api, store } from '../../store';
 import LoadingScreen from '../../components/loading-screen/loading-screen';
 import Map from '../../components/map/map';
-import { getCount } from '../../utils';
+import { capitalizeFirstLetter, getCount } from '../../utils';
 import { humanizeDueDate,machineDueFormat, sortEventsBy } from '../../utils';
 import { FormDataProps } from './components/form/form';
 import { fetchOfferAction } from '../../store/api-actions';
@@ -54,18 +54,23 @@ function Offer():JSX.Element {
   };
 
   const addToFavorite = async () => {
-    const offerStatus = !currentOffer?.isFavorite;
-    const status = Number(offerStatus);
-    await api.post<CardProps[]>(`${APIRoute.Favorite}/${offerId}/${status}`);
-    setCurrentOffer((prevState) => {
-      if(prevState) {
-        return {...prevState, isFavorite: offerStatus};
-      }
-    });
+    try {
+      const offerStatus = !currentOffer?.isFavorite;
+      const status = Number(offerStatus);
+      await api.post<CardProps[]>(`${APIRoute.Favorite}/${offerId}/${status}`);
+      setCurrentOffer((prevState) => {
+        if(prevState) {
+          return {...prevState, isFavorite: offerStatus};
+        }
+      });
 
-    store.dispatch(fetchOfferAction());
-    const {data:otherOfferData} = await api.get<CardProps[]>(`${APIRoute.CurrentOffer}/${offerId}/${APIRoute.NearByOffers}`);
-    setOtherOffer(otherOfferData);
+      store.dispatch(fetchOfferAction());
+      const {data:otherOfferData} = await api.get<CardProps[]>(`${APIRoute.CurrentOffer}/${offerId}/${APIRoute.NearByOffers}`);
+      setOtherOffer(otherOfferData);
+    } catch {
+      navigate(`/${AppRoute.Login}`);
+
+    }
 
   };
 
@@ -122,16 +127,13 @@ function Offer():JSX.Element {
               <h1 className="offer__name">
                 {currentOffer.title}
               </h1>
-              {// eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
-                authorizationStatus === AuthorizationStatus.Auth && (
-                  <button className={`offer__bookmark-button button ${currentOffer.isFavorite ? 'offer__bookmark-button--active' : ''}`} type="button" onClick={onHandleFavoriteAdd}>
-                    <svg className="offer__bookmark-icon" width="31" height="33">
-                      <use xlinkHref="#icon-bookmark"></use>
-                    </svg>
-                    <span className="visually-hidden">To bookmarks</span>
-                  </button>)
-              }
 
+              <button className={`offer__bookmark-button button ${currentOffer.isFavorite ? 'offer__bookmark-button--active' : ''}`} type="button" onClick={onHandleFavoriteAdd}>
+                <svg className="offer__bookmark-icon" width="31" height="33">
+                  <use xlinkHref="#icon-bookmark"></use>
+                </svg>
+                <span className="visually-hidden">To bookmarks</span>
+              </button>
             </div>
             <div className="offer__rating rating">
               <div className="offer__stars rating__stars">
@@ -142,7 +144,7 @@ function Offer():JSX.Element {
             </div>
             <ul className="offer__features">
               <li className="offer__feature offer__feature--entire">
-                {currentOffer.type}
+                {capitalizeFirstLetter(currentOffer.type)}
               </li>
               <li className="offer__feature offer__feature--bedrooms">
                 {currentOffer.bedrooms} Bedroom{getCount(currentOffer.bedrooms)}

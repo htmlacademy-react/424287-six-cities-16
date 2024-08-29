@@ -24,7 +24,7 @@ const initialState: initialStateProps = {
   authorizationStatus: AuthorizationStatus.Unknown,
   user: undefined,
   favoritesOffersData:undefined
-};
+} as const;
 
 export const reducer = createReducer(initialState,(builder) => {
   builder

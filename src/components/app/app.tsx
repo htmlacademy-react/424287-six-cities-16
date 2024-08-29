@@ -2,7 +2,7 @@ import { Routes,Route } from 'react-router-dom';
 import { AuthorizationStatus} from '../../const';
 import { AppRoute } from '../../const';
 import { HelmetProvider } from 'react-helmet-async';
-import MainPage from '../../pages/main/main-page';
+import MainPage from '../../pages/main-page/main-page';
 import ErrorPage from '../error-page/error-page';
 import Favourites from '../../pages/favourites/favourites';
 import Login from '../../pages/login/login';
@@ -16,6 +16,7 @@ import HistoryRouter from '../history-route/history-route';
 
 function App(): JSX.Element {
   const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
+
   if (isOffersDataLoading) {
     return (
       < LoadingScreen />

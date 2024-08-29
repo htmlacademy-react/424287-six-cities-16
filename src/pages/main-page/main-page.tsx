@@ -61,9 +61,8 @@ function MainPage():JSX.Element {
         <div className="tabs">
           <section className="locations container">
             <ul className="locations__list tabs__list">
-              {CITIES_MOCKS.map((item, id) =>(
-                //eslint-disable-next-line react/no-array-index-key
-                <li className="locations__item" key={id} onClick={() => {
+              {CITIES_MOCKS.map((item) =>(
+                <li className="locations__item" key={item.title} onClick={() => {
                   dispatch(changeActiveCity({currentCity:item}));
                 }}
                 >

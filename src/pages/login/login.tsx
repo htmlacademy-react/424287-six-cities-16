@@ -19,6 +19,7 @@ function Login(): JSX.Element {
         password: passwordRef.current.value
       }));
     }
+
   };
   return (
     <main className="page__main page__main--login">

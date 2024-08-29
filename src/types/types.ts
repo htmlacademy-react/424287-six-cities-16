@@ -63,12 +63,6 @@ export type AuthData = {
   password: string;
 };
 
-export type LoginData = {
-  id: number;
-  email: string;
-  token: string;
-};
-
 export interface UserData {
   name: string;
 avatarUrl: string;
