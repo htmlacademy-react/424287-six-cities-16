@@ -1,7 +1,7 @@
 import { Fragment, useState } from 'react';
 
 export type FormDataProps = {
-  rating: number | null;
+  rating: number | undefined;
   comment: '';
 }
 
@@ -9,7 +9,7 @@ const STAR_ARRAYS = [5,4,3,2,1];
 const MAX_TEXTAREA_VALUES = 300;
 const MIN_TEXTAREA_VALUES = 50;
 const DEFAULT_FORM_DATA: FormDataProps = {
-  rating: null,
+  rating: undefined,
   comment: '',
 };
 

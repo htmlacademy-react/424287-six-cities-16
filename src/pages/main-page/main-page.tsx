@@ -8,7 +8,7 @@ import { changeActiveCity } from '../../store/actions';
 import { useAppSelector } from '../../hooks';
 import { CardProps, Sorting } from '../../types/types';
 import { getActiveOffersLength, getSortedOffers } from '../../utils';
-import { SORTING } from '../../const';
+import { SORTINGS } from '../../const';
 
 function MainPage():JSX.Element {
 
@@ -17,7 +17,7 @@ function MainPage():JSX.Element {
   const offerData = useAppSelector((state) => state.offersData);
   const [filteredOffers, setFilteredOffers] = useState<CardProps[]|undefined>();
   const [isOpenSorting, setIsOpenSorting] = useState<boolean>(false);
-  const [selectedSorting, setSelectedSorting] = useState<Sorting>(SORTING[0]);
+  const [selectedSorting, setSelectedSorting] = useState<Sorting>(SORTINGS[0]);
 
   useEffect(()=> {
     if(activeCity && offerData) {
@@ -91,7 +91,7 @@ function MainPage():JSX.Element {
                   <ul
                     className={`places__options places__options--custom ${isOpenSorting ? 'places__options--opened' : ''}`}
                   >
-                    {SORTING.map((sort: Sorting) => (
+                    {SORTINGS.map((sort: Sorting) => (
                       <li className={`places__option ${selectedSorting === sort ? 'places__option--active' : ''}`}
                         tabIndex={0}
                         key={sort}

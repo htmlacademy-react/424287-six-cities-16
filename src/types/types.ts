@@ -1,4 +1,3 @@
-import { SORTING } from '../const.js';
 import {store} from '../store/index.js';
 
 export type CardProps = {
@@ -72,4 +71,4 @@ token: string;
 password: string;
 }
 
-export type Sorting = typeof SORTING[number];
+export type Sorting = 'Popular'| 'Price: low to high'| 'Price: high to low' | 'Top rated first';

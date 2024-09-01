@@ -11,7 +11,7 @@ interface initialStateProps {
   offersData: undefined | CardProps[];
   offersFullData: undefined | OfferCard[];
   isOffersDataLoading: boolean;
-  authorizationStatus:string;
+  authorizationStatus:AuthorizationStatus;
   user: undefined | UserData;
   favoritesOffersData: undefined | CardProps[];
 }
