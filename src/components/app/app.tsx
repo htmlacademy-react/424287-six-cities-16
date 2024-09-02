@@ -1,5 +1,5 @@
 import { Routes,Route } from 'react-router-dom';
-import { AppRoute } from '../../const';
+import { AppRoute, AuthorizationStatus } from '../../const';
 import { HelmetProvider } from 'react-helmet-async';
 import MainPage from '../../pages/main-page/main-page';
 import ErrorPage from '../error-page/error-page';
@@ -12,12 +12,12 @@ import LoadingScreen from '../loading-screen/loading-screen';
 import { useAppSelector } from '../../hooks';
 import browserHistory from '../../browser-history';
 import HistoryRouter from '../history-route/history-route';
-import { useAuth } from '../../hooks/is-authorized';
 
 function App(): JSX.Element {
   const isOffersDataLoading = useAppSelector((state) => state.IsOffersDataLoading);
-  const isAthorized = useAuth();
-  if (isOffersDataLoading) {
+  const authorizationStatus = useAppSelector((state) => state.AuthorizationStatus);
+
+  if (isOffersDataLoading || authorizationStatus === AuthorizationStatus.Unknown) {
     return (
       < LoadingScreen />
     );
@@ -32,7 +32,7 @@ function App(): JSX.Element {
             />
             <Route
               path={AppRoute.Favorites}
-              element={ <PrivateRoute authorizationStatus={isAthorized}><Favourites/></PrivateRoute>}
+              element={ <PrivateRoute authorizationStatus={authorizationStatus}><Favourites/></PrivateRoute>}
             />
             <Route
               path={AppRoute.Login}
