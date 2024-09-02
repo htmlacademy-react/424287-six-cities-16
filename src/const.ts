@@ -22,4 +22,4 @@ export enum APIRoute {
     Comments = '/comments'
   }
 
-export const SORTING = ['Popular', 'Price: low to high', 'Price: high to low', 'Top rated first'] as const;
+export const SORTINGS = ['Popular', 'Price: low to high', 'Price: high to low', 'Top rated first'] as const;

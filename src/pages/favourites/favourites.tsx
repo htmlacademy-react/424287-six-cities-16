@@ -6,7 +6,7 @@ import { useAppSelector } from '../../hooks';
 import Card from '../../components/card/card';
 
 function Favourites(): JSX.Element {
-  const offerData = useAppSelector((state) => state.offersData);
+  const offerData = useAppSelector((state) => state.OffersData);
   const offerCardsByCity = offerData ? getOfferCardsByCity(offerData) : null;
 
   return (
@@ -30,7 +30,7 @@ function Favourites(): JSX.Element {
                   </div>
                   <div className="favorites__places">
                     {cards.map((item) => (
-                      <Card key={item.id} className='favorites' data={item}/>
+                      <Card key={item.id} className='favorites' data={item} width={150} height={110}/>
                     ))}
                   </div>
                 </li>

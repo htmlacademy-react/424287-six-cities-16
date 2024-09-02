@@ -9,11 +9,10 @@ type OfferCardByCity = {
 import { Sorting } from './types/types';
 import dayjs from 'dayjs';
 
-
 const DateFormat = {
-  DAY_FORMAT: 'MMMM YYYY',
-  MACHINE_FORMAT: 'YYYY-MM-DD',
-} ;
+  DayFormat: 'MMMM YYYY',
+  MachineFormat: 'YYYY-MM-DD',
+} as const;
 
 export const getOfferCardsByCity = (offerCards:CardProps[]) => {
   const offerCardsByCity: OfferCardByCity = {};
@@ -49,7 +48,8 @@ export const getSortedOffers = ({filteredOffers, sort}: {
   }
 };
 
-export const humanizeDueDate = (dueDate:string) => dueDate ? dayjs(dueDate).format(DateFormat.DAY_FORMAT) : '';
-export const machineDueFormat = (dueDate:string) => dueDate ? dayjs(dueDate).format(DateFormat.MACHINE_FORMAT) : '';
+export const humanizeDueDate = (dueDate:string) => dueDate ? dayjs(dueDate).format(DateFormat.DayFormat) : '';
+export const machineDueFormat = (dueDate:string) => dueDate ? dayjs(dueDate).format(DateFormat.MachineFormat) : '';
 
 export const sortEventsBy = (comments: Comment[]) => [...comments].sort((a, b) => dayjs(b.date).diff(dayjs(a.date)));
+export const capitalizeFirstLetter = (word: string): string => word[0].toUpperCase() + word.slice(1);

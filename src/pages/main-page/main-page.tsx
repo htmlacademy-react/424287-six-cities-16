@@ -8,16 +8,16 @@ import { changeActiveCity } from '../../store/actions';
 import { useAppSelector } from '../../hooks';
 import { CardProps, Sorting } from '../../types/types';
 import { getActiveOffersLength, getSortedOffers } from '../../utils';
-import { SORTING } from '../../const';
+import { SORTINGS } from '../../const';
 
 function MainPage():JSX.Element {
 
   const [selectedPoint, setSelectedPoint] = useState<string|undefined>(undefined);
-  const activeCity = useAppSelector((state)=> state.currentCity);
-  const offerData = useAppSelector((state) => state.offersData);
+  const activeCity = useAppSelector((state)=> state.CurrentCity);
+  const offerData = useAppSelector((state) => state.OffersData);
   const [filteredOffers, setFilteredOffers] = useState<CardProps[]|undefined>();
   const [isOpenSorting, setIsOpenSorting] = useState<boolean>(false);
-  const [selectedSorting, setSelectedSorting] = useState<Sorting>(SORTING[0]);
+  const [selectedSorting, setSelectedSorting] = useState<Sorting>(SORTINGS[0]);
 
   useEffect(()=> {
     if(activeCity && offerData) {
@@ -61,9 +61,8 @@ function MainPage():JSX.Element {
         <div className="tabs">
           <section className="locations container">
             <ul className="locations__list tabs__list">
-              {CITIES_MOCKS.map((item, id) =>(
-                //eslint-disable-next-line react/no-array-index-key
-                <li className="locations__item" key={id} onClick={() => {
+              {CITIES_MOCKS.map((item) =>(
+                <li className="locations__item" key={item.title} onClick={() => {
                   dispatch(changeActiveCity({currentCity:item}));
                 }}
                 >
@@ -92,7 +91,7 @@ function MainPage():JSX.Element {
                   <ul
                     className={`places__options places__options--custom ${isOpenSorting ? 'places__options--opened' : ''}`}
                   >
-                    {SORTING.map((sort: Sorting) => (
+                    {SORTINGS.map((sort: Sorting) => (
                       <li className={`places__option ${selectedSorting === sort ? 'places__option--active' : ''}`}
                         tabIndex={0}
                         key={sort}

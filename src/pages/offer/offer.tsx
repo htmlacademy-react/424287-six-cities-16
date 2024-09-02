@@ -3,12 +3,12 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Form from './components/form/form';
 import { CardProps, OfferCard, UserData } from '../../types/types';
 import { useAppSelector } from '../../hooks';
-import { APIRoute, AuthorizationStatus } from '../../const';
+import { APIRoute, AppRoute, AuthorizationStatus } from '../../const';
 import { useCallback, useEffect, useState } from 'react';
 import { api, store } from '../../store';
 import LoadingScreen from '../../components/loading-screen/loading-screen';
 import Map from '../../components/map/map';
-import { getCount } from '../../utils';
+import { capitalizeFirstLetter, getCount } from '../../utils';
 import { humanizeDueDate,machineDueFormat, sortEventsBy } from '../../utils';
 import { FormDataProps } from './components/form/form';
 import { fetchOfferAction } from '../../store/api-actions';
@@ -21,9 +21,12 @@ user: Omit<UserData, 'email'|'token '>;
 comment: string;
 rating: number;
  }
+
+const FIRST_ELEMENT = 0;
+
 function Offer():JSX.Element {
   const {id:offerId} = useParams();
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const authorizationStatus = useAppSelector((state) => state.AuthorizationStatus);
   const navigate = useNavigate();
 
   const [currentOffer, setCurrentOffer] = useState<OfferCard | undefined >();
@@ -31,7 +34,7 @@ function Offer():JSX.Element {
   const [comments, setComments] = useState<Comment[] | undefined >();
   const [isDisableForm, setIsDisabledForm] = useState(false);
 
-  const activeCity = useAppSelector((state)=> state.currentCity);
+  const activeCity = useAppSelector((state)=> state.CurrentCity);
 
   const getComments = useCallback(async () => {
     const {data:commentsData} = await api.get<Comment[]>(`${APIRoute.Comments}/${offerId}`);
@@ -39,13 +42,13 @@ function Offer():JSX.Element {
 
   },[offerId]);
 
-  const onHandleSubmitForm = async (data: FormDataProps) => {
+  const onHandleSubmitForm = async (data: FormDataProps, cb: () => void) => {
     try {
       setIsDisabledForm(true);
       await api.post<FormDataProps>(`${APIRoute.Comments}/${offerId}`, data);
       getComments();
       setIsDisabledForm(false);
-
+      cb();
     } catch {
       // eslint-disable-next-line no-alert
       alert('К сожалению, возникла ошибка. Попробуйте еще раз');
@@ -54,18 +57,23 @@ function Offer():JSX.Element {
   };
 
   const addToFavorite = async () => {
-    const offerStatus = !currentOffer?.isFavorite;
-    const status = Number(offerStatus);
-    await api.post<CardProps[]>(`${APIRoute.Favorite}/${offerId}/${status}`);
-    setCurrentOffer((prevState) => {
-      if(prevState) {
-        return {...prevState, isFavorite: offerStatus};
-      }
-    });
+    try {
+      const offerStatus = !currentOffer?.isFavorite;
+      const status = Number(offerStatus);
+      await api.post<CardProps[]>(`${APIRoute.Favorite}/${offerId}/${status}`);
+      setCurrentOffer((prevState) => {
+        if(prevState) {
+          return {...prevState, isFavorite: offerStatus};
+        }
+      });
 
-    store.dispatch(fetchOfferAction());
-    const {data:otherOfferData} = await api.get<CardProps[]>(`${APIRoute.CurrentOffer}/${offerId}/${APIRoute.NearByOffers}`);
-    setOtherOffer(otherOfferData);
+      store.dispatch(fetchOfferAction());
+      const {data:otherOfferData} = await api.get<CardProps[]>(`${APIRoute.CurrentOffer}/${offerId}/${APIRoute.NearByOffers}`);
+      setOtherOffer(otherOfferData);
+    } catch {
+      navigate(`/${AppRoute.Login}`);
+
+    }
 
   };
 
@@ -105,7 +113,7 @@ function Offer():JSX.Element {
       <section className="offer">
         <div className="offer__gallery-container container">
           <div className="offer__gallery">
-            {currentOffer.images.slice(0,6).map((image)=>(
+            {currentOffer.images.slice(FIRST_ELEMENT,6).map((image)=>(
               <div className="offer__image-wrapper" key={image}>
                 <img className="offer__image" src={image} alt="Photo studio"/>
               </div>))}
@@ -122,16 +130,13 @@ function Offer():JSX.Element {
               <h1 className="offer__name">
                 {currentOffer.title}
               </h1>
-              {// eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
-                authorizationStatus === AuthorizationStatus.Auth && (
-                  <button className={`offer__bookmark-button button ${currentOffer.isFavorite ? 'offer__bookmark-button--active' : ''}`} type="button" onClick={onHandleFavoriteAdd}>
-                    <svg className="offer__bookmark-icon" width="31" height="33">
-                      <use xlinkHref="#icon-bookmark"></use>
-                    </svg>
-                    <span className="visually-hidden">To bookmarks</span>
-                  </button>)
-              }
 
+              <button className={`offer__bookmark-button button ${currentOffer.isFavorite ? 'offer__bookmark-button--active' : ''}`} type="button" onClick={onHandleFavoriteAdd}>
+                <svg className="offer__bookmark-icon" width="31" height="33">
+                  <use xlinkHref="#icon-bookmark"></use>
+                </svg>
+                <span className="visually-hidden">To bookmarks</span>
+              </button>
             </div>
             <div className="offer__rating rating">
               <div className="offer__stars rating__stars">
@@ -142,7 +147,7 @@ function Offer():JSX.Element {
             </div>
             <ul className="offer__features">
               <li className="offer__feature offer__feature--entire">
-                {currentOffer.type}
+                {capitalizeFirstLetter(currentOffer.type)}
               </li>
               <li className="offer__feature offer__feature--bedrooms">
                 {currentOffer.bedrooms} Bedroom{getCount(currentOffer.bedrooms)}
@@ -187,7 +192,7 @@ function Offer():JSX.Element {
               <section className="offer__reviews reviews">
                 <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{comments.length}</span></h2>
                 <ul className="reviews__list">
-                  {sortEventsBy(comments).slice(0,10).map((item) => (
+                  {sortEventsBy(comments).slice(FIRST_ELEMENT,10).map((item) => (
                     <li className="reviews__item" key={item.id}>
                       <div className="reviews__user user">
                         <div className="reviews__avatar-wrapper user__avatar-wrapper">
@@ -220,7 +225,7 @@ function Offer():JSX.Element {
           </div>
         </div>
         <section className="offer__map map">
-          {otherOffer && (<Map city={activeCity} points={[...otherOffer.slice(0,3),currentOffer]} selectedPoint={currentOffer.id} />)}
+          {otherOffer && (<Map city={activeCity} points={[...otherOffer.slice(FIRST_ELEMENT,3),currentOffer]} selectedPoint={currentOffer.id} />)}
         </section>
       </section>
       {otherOffer && (
@@ -228,8 +233,8 @@ function Offer():JSX.Element {
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
-              {otherOffer.slice(0,3).map((item) => (
-                <Card key={item.id} data={item} className='near-places'/>
+              {otherOffer.slice(FIRST_ELEMENT,3).map((item) => (
+                <Card key={item.id} data={item} className='near-places' width={260} height={200}/>
               ))}
 
 
