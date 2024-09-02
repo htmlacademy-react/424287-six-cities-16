@@ -15,7 +15,7 @@ import HistoryRouter from '../history-route/history-route';
 import { useAuth } from '../../hooks/is-authorized';
 
 function App(): JSX.Element {
-  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
+  const isOffersDataLoading = useAppSelector((state) => state.IsOffersDataLoading);
   const isAthorized = useAuth();
   if (isOffersDataLoading) {
     return (

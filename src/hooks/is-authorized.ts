@@ -1,3 +1,3 @@
 import { useAppSelector } from '.';
 
-export const useAuth = () => useAppSelector((state) => state.authorizationStatus);
+export const useAuth = () => useAppSelector((state) => state.AuthorizationStatus);

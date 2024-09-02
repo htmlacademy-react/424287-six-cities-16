@@ -13,8 +13,8 @@ import { SORTINGS } from '../../const';
 function MainPage():JSX.Element {
 
   const [selectedPoint, setSelectedPoint] = useState<string|undefined>(undefined);
-  const activeCity = useAppSelector((state)=> state.currentCity);
-  const offerData = useAppSelector((state) => state.offersData);
+  const activeCity = useAppSelector((state)=> state.CurrentCity);
+  const offerData = useAppSelector((state) => state.OffersData);
   const [filteredOffers, setFilteredOffers] = useState<CardProps[]|undefined>();
   const [isOpenSorting, setIsOpenSorting] = useState<boolean>(false);
   const [selectedSorting, setSelectedSorting] = useState<Sorting>(SORTINGS[0]);

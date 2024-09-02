@@ -7,42 +7,42 @@ import { OfferCard } from '../types/types';
 import { AuthorizationStatus } from '../const';
 
 interface initialStateProps {
-  currentCity: City;
-  offersData: undefined | CardProps[];
-  offersFullData: undefined | OfferCard[];
-  isOffersDataLoading: boolean;
-  authorizationStatus:AuthorizationStatus;
-  user: undefined | UserData;
-  favoritesOffersData: undefined | CardProps[];
+  CurrentCity: City;
+  OffersData: undefined | CardProps[];
+  OffersFullData: undefined | OfferCard[];
+  IsOffersDataLoading: boolean;
+  AuthorizationStatus:AuthorizationStatus;
+  User: undefined | UserData;
+  FavoritesOffersData: undefined | CardProps[];
 }
 
-const initialState: initialStateProps = {
-  currentCity: CITIES_MOCKS[0],
-  offersData: undefined,
-  offersFullData: undefined,
-  isOffersDataLoading: false,
-  authorizationStatus: AuthorizationStatus.Unknown,
-  user: undefined,
-  favoritesOffersData:undefined
+const InitialState: initialStateProps = {
+  CurrentCity: CITIES_MOCKS[0],
+  OffersData: undefined,
+  OffersFullData: undefined,
+  IsOffersDataLoading: false,
+  AuthorizationStatus: AuthorizationStatus.Unknown,
+  User: undefined,
+  FavoritesOffersData:undefined
 } as const;
 
-export const reducer = createReducer(initialState,(builder) => {
+export const reducer = createReducer(InitialState,(builder) => {
   builder
     .addCase(changeActiveCity,(state,action)=>{
-      state.currentCity = action.payload.currentCity;
+      state.CurrentCity = action.payload.currentCity;
     })
     .addCase(setOffersData,(state,action)=>{
-      state.offersData = action.payload.offersData;
+      state.OffersData = action.payload.offersData;
     })
     .addCase(setOffersDataLoadingStatus, (state, action) => {
-      state.isOffersDataLoading = action.payload;
+      state.IsOffersDataLoading = action.payload;
     })
     .addCase(requireAuthorization, (state, action) => {
-      state.authorizationStatus = action.payload.authStatus;
-      state.user = action.payload.userData;
+      state.AuthorizationStatus = action.payload.authStatus;
+      state.User = action.payload.userData;
     })
     .addCase(setFavoriteOffersData, (state, action) => {
-      state.favoritesOffersData = action.payload.favoritesOffersData;
+      state.FavoritesOffersData = action.payload.favoritesOffersData;
     });
 
 });

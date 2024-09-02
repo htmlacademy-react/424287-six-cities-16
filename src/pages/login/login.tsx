@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { AppRoute } from '../../const';
-import { useRef, FormEvent } from 'react';
-import { useAppDispatch } from '../../hooks';
+import { AppRoute, AuthorizationStatus } from '../../const';
+import { useRef, FormEvent, useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { loginAction } from '../../store/api-actions';
 
 function Login(): JSX.Element {
@@ -10,6 +10,16 @@ function Login(): JSX.Element {
   const passwordRef = useRef<HTMLInputElement | null>(null);
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const authorizationStatus = useAppSelector((state) => state.AuthorizationStatus);
+
+
+  useEffect(() => {
+    if (authorizationStatus === AuthorizationStatus.Auth) {
+      navigate(AppRoute.Root);
+    }
+  }, [authorizationStatus, navigate]);
+
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 

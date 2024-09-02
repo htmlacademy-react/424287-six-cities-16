@@ -5,9 +5,9 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { logoutAction } from '../../store/api-actions';
 
 function Layout():JSX.Element {
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const userData = useAppSelector((state) => state.user);
-  const favoritesData = useAppSelector((state) => state.offersData);
+  const authorizationStatus = useAppSelector((state) => state.AuthorizationStatus);
+  const userData = useAppSelector((state) => state.User);
+  const favoritesData = useAppSelector((state) => state.OffersData);
   const dispatch = useAppDispatch();
 
   return (

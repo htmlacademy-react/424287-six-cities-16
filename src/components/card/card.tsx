@@ -5,7 +5,7 @@ import { api, store } from '../../store';
 import { fetchOfferAction } from '../../store/api-actions';
 import { capitalizeFirstLetter } from '../../utils';
 
-function Card({data,onMouseOver,onMouseLeave, className} :{data: CardProps; onMouseOver?:() => void;onMouseLeave?:() => void; className?:string}):JSX.Element {
+function Card({data,onMouseOver,onMouseLeave, className,width,height} :{data: CardProps; onMouseOver?:() => void;onMouseLeave?:() => void; className?:string; width?:number; height?:number}):JSX.Element {
 
   const navigate = useNavigate();
 
@@ -34,7 +34,7 @@ function Card({data,onMouseOver,onMouseLeave, className} :{data: CardProps; onMo
         </div> : null}
       <div className={`${className}__image-wrapper place-card__image-wrapper`}>
         <Link to={AppRoute.Root}>
-          <img className="place-card__image" src={data.previewImage} width={260} height={200} alt="Place image"/>
+          <img className="place-card__image" src={data.previewImage} width={width} height={height} alt="Place image"/>
         </Link>
       </div>
       <div className="place-card__info">
